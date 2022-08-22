@@ -2,6 +2,9 @@ import NavBar from './components/NavBar';
 import SideBar from './components/SideBar';
 import PhoneticsList from './components/PhoneticsList';
 import ExampleOfPhonetic from './components/ExampleOfPhonetic';
+import Examples from './components/Examples';
+import PhoneticsSamples from './components/ExampleOfPhonetic';
+
 
 import React from "react";
 import {
@@ -19,7 +22,8 @@ function App() {
           <NavBar/>
           <Routes>
           <Route path="/" element={<PhoneticsList />} /> 
-          <Route path="/examples/:name" element={<ExampleOfPhonetic />} /> 
+          <Route path="/phoneticsexamples/" element={<Examples />} /> 
+          <Route path="/phoneticssexample/:phonetic_name" element={<ExampleOfPhonetic />} /> 
           </Routes>
         </div> 
         </div> 

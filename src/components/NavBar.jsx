@@ -12,7 +12,7 @@ function NavBar() {
             <a href="index.html">
               <img
                 className="img-responsive"
-                src="images/logo/logo.png"
+                src="http://localhost:3000/images/logo/logo.png"
                 alt="#"
               />
             </a>

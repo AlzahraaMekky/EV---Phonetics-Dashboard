@@ -1,5 +1,5 @@
 import background from "./background/pattern_h.png";
-
+import { Link } from "react-router-dom";
 import React from "react";
 
 function SideBar() {
@@ -12,7 +12,7 @@ function SideBar() {
               <a href="index.html">
                 <img
                   className="logo_icon img-responsive"
-                  src="images/logo/logo.png"
+                  src="http://localhost:3000/images/logo/logo.png"
                   alt="#"
                 />
               </a>
@@ -24,7 +24,7 @@ function SideBar() {
               <div className="user_img">
                 <img
                   className="img-responsive"
-                  src="images/logo/logo.png"
+                  src="http://localhost:3000/images/logo/logo.png"
                   alt="#"
                 />
               </div>
@@ -35,18 +35,18 @@ function SideBar() {
           <h4>Phonetics Dashboard</h4>
           <ul className="list-unstyled components">
             <li className="active">
-              <a>
+            <Link to={'/'}>
                 <img
                   style={{ marginRight: "5px" }}
-                  src="images/icons/to-do-list.png"
+                  src="http://localhost:3000/images/icons/to-do-list.png"
                 />
                 <span>Phonetics List</span>
-              </a>
+              </Link>
               <ul className="list-unstyled mb-3" id="dashboard">
                 <li>
-                  <a href="">
+                  <Link to={'/phoneticsexamples'}>
                     <span>Examples</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="">
@@ -59,7 +59,7 @@ function SideBar() {
               <a href="widgets.html">
                 <img
                   style={{ marginTop: "-20px", marginRight: "5px" }}
-                  src="images/icons/001-programmer.png"
+                  src="http://localhost:3000/images/icons/001-programmer.png"
                 />
                 <span>Users</span>
               </a>
