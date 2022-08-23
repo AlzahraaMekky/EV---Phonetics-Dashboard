@@ -3466,3 +3466,8 @@ table.projects tr td:first-child {
   .custom-margin{margin-bottom: 80px;}
   .swal2-styled.swal2-confirm{background-color:#1ed085 !important}
   .swal2-title {color:#15283c;font-size:1.1rem !important}
+  .activeBtn{
+    background-color: #15283c;
+    border: 1px solid#1ed085 ;
+    box-shadow: #fff 4px 4px 0 0,#1ed085 4px 4px 0 1px;
+  }

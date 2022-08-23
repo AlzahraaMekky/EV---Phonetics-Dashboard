@@ -29,11 +29,13 @@ function PhoneticsList() {
     useEffect(() => {
       fetchData();
     }, []);
+
+ 
     const PhoneticsList = Phonetics.map((phonetics, i) => {
       return (
         <>
-          <div key={i} className="col-md-2">
-            <Link
+          <div className="col-md-2">
+            <Link key={phonetics.id} 
               to={`/phoneticssexample/${phonetics.name}`}
               className="button-50"
               role="button"

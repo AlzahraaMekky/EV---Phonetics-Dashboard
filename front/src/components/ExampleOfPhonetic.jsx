@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 function PhoneticsSamples() {
   const { REACT_APP_HOST } = process.env;
   const { phonetic_name } = useParams();
+  const [isActive, setIsActive] = useState(0);
   console.log('phonetic_name',phonetic_name)
   const [PhoneticsExamples, SetPhoneticsExamples] = useState([]);
   const fetchData = async (type='i') => {
@@ -23,6 +24,12 @@ function PhoneticsSamples() {
   useEffect(() => {
     fetchData();
   }, []);
+ 
+  const handleActiveClass = (i) => {
+    setIsActive(i);
+    console.log('IsActive',isActive)
+    
+  }
   const types = ['i', 'm', 'f'];
   function checkType(type) {
     if (type=='i'){
@@ -57,10 +64,9 @@ function PhoneticsSamples() {
         <>
          <div className="col-md-2">
             <button style={{marginBottom:'20px'}}
-                key={i}
-                onClick={()=> fetchData(type)}
-                // to={`/examples/${phonetic_name}${type}`}
-                className="button-50"
+                id={i}
+                onClick={()=> {fetchData(type);handleActiveClass(i)}}
+                className={isActive == i ? 'activeBtn button-50' : 'button-50'} 
                 role="button"
             >
              {checkType(type)}
@@ -73,7 +79,7 @@ function PhoneticsSamples() {
     return (
       <>
        <div className="row column1">
-        <div key={example.id} className="col-md-4">
+        <div className="col-md-4">
             <div>
                 <img
                 className="img-responsive"
@@ -84,8 +90,8 @@ function PhoneticsSamples() {
 
             </div>
           </div>
-          <div key={i} className="col-md-4">
-            <audio controls className="Play">
+          <div  className="col-md-4">
+            <audio key={example.id}  controls className="Play">
               <source src={'https://mysqltest955.000webhostapp.com'+example.voice}  ttype="audio/mp3"></source>
             </audio>
            </div>
