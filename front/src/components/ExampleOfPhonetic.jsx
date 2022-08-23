@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import { Button, Modal } from "react-bootstrap";
 function PhoneticsSamples() {
   const { REACT_APP_HOST } = process.env;
   const { phonetic_name } = useParams();
   const [isActive, setIsActive] = useState(0);
+  const [show, setshow] = useState(false);
   console.log('phonetic_name',phonetic_name)
   const [PhoneticsExamples, SetPhoneticsExamples] = useState([]);
   const fetchData = async (type='i') => {
@@ -24,7 +25,10 @@ function PhoneticsSamples() {
   useEffect(() => {
     fetchData();
   }, []);
- 
+  // #Open and close model
+  const handleClose = () => setshow(false);
+  const handleShow = () => setshow(true);
+
   const handleActiveClass = (i) => {
     setIsActive(i);
     console.log('IsActive',isActive)
@@ -78,8 +82,9 @@ function PhoneticsSamples() {
   const PhoneticsExamplesList = PhoneticsExamples.map((example, i) => {
     return (
       <>
-       <div className="row column1">
-        <div className="col-md-4">
+      <div className="col-md-6 specialcol">
+      <div className="boxContainer">
+       <div className="boxlayout">
             <div>
                 <img
                 className="img-responsive"
@@ -89,32 +94,46 @@ function PhoneticsSamples() {
              <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {example.word}</span>
 
             </div>
-          </div>
-          <div  className="col-md-4">
-            <audio key={example.id}  controls className="Play">
-              <source src={'https://mysqltest955.000webhostapp.com'+example.voice}  ttype="audio/mp3"></source>
-            </audio>
-           </div>
-       </div>
-        <div style={{marginBottom:'5px'}}></div>
+        </div>
+        <div  className="boxlayout">
+          <audio key={example.id}  controls className="Play">
+            <source src={'https://mysqltest955.000webhostapp.com'+example.voice}  ttype="audio/mp3"></source>
+          </audio>
+        </div>
+       </div>  
+      </div>
       </>
     );
   });
   return (
     <div className="midde_cont">
       <div className="container-fluid">
-      <div className="row column_title">
-          <div className="col-md-12">
-            <div className="page_title">
-            <h2>Phonetics Samples for Letter {phonetic_name}</h2>
+      <div className="row column_title page_title">
+          <div className="col-6">
+            <div className="">
+              <h2>Phonetics Samples for Letter {phonetic_name}</h2>
             </div>
           </div>
+          <div className="col-6 d-flex justify-content-end">
+          <Button
+                type="button"
+                style={{background:'none',border:'none',color:'#15283c'}}
+                onClick={() => {
+                  handleShow();
+                }}
+              >
+              <img
+                  src="http://localhost:3000/images/icons/plus.png"
+                />
+              <span style={{paddingLeft:'5px'}}>Add Example</span>
+              </Button>
+          </div>
         </div>
- 
         <div className="row column1">
           {typeList}
         </div>
-        {PhoneticsExamplesList}
+        <div className="row column1">{PhoneticsExamplesList}</div>
+        
       </div>
     </div>
   );
