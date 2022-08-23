@@ -155,7 +155,7 @@ const alertletterError = () =>  {
                   <span className="input-group-text" id="basic-addon1"><i className="fas fa-sort-alpha-down"></i></span>
                 </div>
                 <input type="text" className="form-control" onChange={(evt) => setname(evt.target.value)}
-                placeholder="Add Phonetics" aria-label="Username" aria-describedby="basic-addon1"/>
+                placeholder="Add Phonetics" aria-label="name" aria-describedby="basic-addon1"/>
               </div>
              
               {flashmsgshow ? (
