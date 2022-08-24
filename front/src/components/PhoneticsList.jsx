@@ -84,33 +84,33 @@ const alertletterError = () =>  {
     </div>
   );
 }
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const isValid = validate();
-      if (isValid) {
-      const uploadData = new FormData();
-      uploadData.append("name", name)
-      axios
-        .post( `${REACT_APP_HOST}addNewPhonetic.php`, uploadData)
-        .then((res) => {
-          console.log(res);
-          if (res.data>0){
-            console.log('insert into database')
-            setflashmsgshow(false)
-            setletterError(false)
-            setname("")
-            handleClose()
-            successMsgAlert()
-            fetchData()
-          }if (res.data==-1){
-            console.log('letter exit in database')
-            setletterError(true)
-            setflashmsgshow(false)
-          }
-         
-        })
-        .catch((error) => console.log(error));
-    }};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isValid = validate();
+    if (isValid) {
+    const uploadData = new FormData();
+    uploadData.append("name", name)
+    axios
+      .post( `${REACT_APP_HOST}addNewPhonetic.php`, uploadData)
+      .then((res) => {
+        console.log(res);
+        if (res.data>0){
+          console.log('insert into database')
+          setflashmsgshow(false)
+          setletterError(false)
+          setname("")
+          handleClose()
+          successMsgAlert()
+          fetchData()
+        }if (res.data==-1){
+          console.log('letter exit in database')
+          setletterError(true)
+          setflashmsgshow(false)
+        }
+        
+      })
+      .catch((error) => console.log(error));
+  }};
   return (
     <div className="midde_cont">
       <div className="container-fluid">
