@@ -3477,8 +3477,8 @@ table.projects tr td:first-child {
   }
   
   .boxlayout {
-    padding: 10px;
-    margin: 5px;
+    padding: 4px;
+    /* margin: 5px; */
   
   }
   .badge-light {

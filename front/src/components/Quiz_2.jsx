@@ -13,7 +13,7 @@ function Quiz_2() {
           <div className="col-6">
               <h2>Phonetics Quiz two</h2>
           </div>
-        {/* <AddQuiztwo/> */}
+          <AddQuiztwo/>
         </div>
         <div className="row column1">
           <LettersList4Quiz2/>

@@ -25,14 +25,6 @@ function QuiztwoPhonetics() {
 
 
   const PhoneticsQuiz2List = PhoneticsQuiztwo.map((quiz, i) => {
-    // return (   
-    //     <ul>
-    //     {quiz.data.map(q => 
-    //       <li>{q.correct_word}</li>
-    //     )}
-    //   </ul>
-        
-    // )
     return (
         <div className="row">
             <div className="col-md-3 specialcol">
@@ -62,9 +54,6 @@ function QuiztwoPhonetics() {
                 </div>  
             </div>
         </div>
-
-     
-      
     )
 });
   return (
