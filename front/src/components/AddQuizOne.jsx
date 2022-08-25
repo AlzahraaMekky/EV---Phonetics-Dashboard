@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import LettersSelectOption from "./LettersSelectOption";
 import Toast from 'react-bootstrap/Toast';
 import Swal from "sweetalert2";
-function AddExample() {
+function AddQuizOne() {
 const { REACT_APP_HOST } = process.env;
 const [show, setshow] = useState(false);
 const [word, setword] = useState("");
@@ -23,7 +23,7 @@ const types = ['initially', 'medially', 'finally'];
   const handleClose = () => setshow(false);
   const handleShow = () => setshow(true);
   const successMsgAlert = () => {
-    Swal.fire('Phonetics Example added')
+    Swal.fire('Phonetics Quiz One added')
   };
   const typeList = types.map((type, i) => {   
     return(
@@ -73,7 +73,7 @@ const handleSubmit = (e) => {
     uploadData.append("type", type)
     uploadData.append("voice", voice, voice.name);
     axios
-        .post( `${REACT_APP_HOST}addExample.php`, uploadData)
+        .post( `${REACT_APP_HOST}AddQuiz1.php`, uploadData)
         .then((res) => {
         console.log(res);
         if (res.data=='file'){
@@ -161,14 +161,14 @@ const handleSubmit = (e) => {
             <img
                 src="http://localhost:3000/images/icons/plus.png"
               />
-            <span style={{paddingLeft:'5px'}}>Add Example</span>
+            <span style={{paddingLeft:'5px'}}>Add Quiz One</span>
             </Button>
         </div>
         <div className="row">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>
-              <h6>Add Example </h6>
+              <h6>Add Phonetics Quiz One</h6>
             </Modal.Title>
             <button onClick={handleClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -249,7 +249,7 @@ const handleSubmit = (e) => {
                   }}
                  
                 >
-                  Save Example
+                  Save Quiz One
                 </Button>
               </Modal.Footer>
             </form>
@@ -260,4 +260,4 @@ const handleSubmit = (e) => {
       );
 }
 
-export default AddExample;
+export default AddQuizOne;

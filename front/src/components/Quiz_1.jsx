@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import LettersList4Quiz1 from "./LettersList4Quiz1";
-
+import AddQuizOne from "./AddQuizOne";
 
 function Quiz_1() {
   const { REACT_APP_HOST } = process.env;
@@ -13,7 +13,7 @@ function Quiz_1() {
           <div className="col-6">
               <h2>Phonetics Quiz One</h2>
           </div>
-        {/* <AddExample/> */}
+        <AddQuizOne/>
         </div>
         <div className="row column1">
           <LettersList4Quiz1/>

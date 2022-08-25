@@ -94,7 +94,7 @@ function QuizOnePhonetics() {
         </div>
         <div  className="boxlayout">
           <audio key={quiz.id}  controls className="Play">
-            <source src={'https://mysqltest955.000webhostapp.com'+quiz.voice}  ttype="audio/mp3"></source>
+            <source src={'https://mysqltest955.000webhostapp.com/'+quiz.voice}  ttype="audio/mp3"></source>
           </audio>
         </div>
        </div>  
