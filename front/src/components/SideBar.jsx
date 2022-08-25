@@ -49,9 +49,10 @@ function SideBar() {
                   </Link>
                 </li>
                 <li>
-                  <a href="">
+                  <Link to={'/quiz-One'}>
                     <span>Quiz</span>
-                  </a>
+                    <span class="badge badge-light">1</span>
+                  </Link>
                 </li>
               </ul>
             </li>

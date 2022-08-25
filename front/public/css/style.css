@@ -3481,3 +3481,13 @@ table.projects tr td:first-child {
     margin: 5px;
   
   }
+  .badge-light {
+    color: #15283c;
+    background-color: #1ed085 !important;
+    margin-left: 5px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    padding: 0.25em 0.2em;
+    font-size: 80%;
+}
