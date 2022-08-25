@@ -66,11 +66,11 @@ const handleSubmit = (e) => {
     if (isValid) {
     const uploadData = new FormData();
     uploadData.append("phonetic_id", letter)
-    let words = [{"order": 1, "word":word1,"voice":voice1 },{"order": 2, "word":word2,"voice":voice2},{"order": 3, "word":word3,"voice":voice3}]
-    uploadData.append("words", words)
+    let items = [{"order": 1, "word":word1,"voice":voice1 },{"order": 2, "word":word2,"voice":voice2},{"order": 3, "word":word3,"voice":voice3}]
+    uploadData.append("items", items)
   
     axios
-        .post( `${REACT_APP_HOST}addExample.php`, uploadData)
+        .post( `${REACT_APP_HOST}addQuiz2.php`, uploadData)
         .then((res) => {
         console.log(res);
         if (res.data=='file'){
