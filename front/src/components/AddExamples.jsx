@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import LettersSelectOption from "./LettersSelectOption";
 import Toast from 'react-bootstrap/Toast';
+import Swal from "sweetalert2";
 function AddExample() {
 const { REACT_APP_HOST } = process.env;
 const [show, setshow] = useState(false);
@@ -12,6 +13,8 @@ const [letter, setletter] = useState("");
 const [letterError, setletterError] = useState(false);
 const [type, settype] = useState("");
 const [typeError, settypeError] = useState(false);
+const [FileError, setFileError] = useState(false);
+const [wordExitError, setwordExitError] = useState(false);
 const [voice, setvoice] = useState();
 console.log('voice',typeof(voice),voice)
 const [voiceError, setvoiceError] = useState(false);
@@ -19,6 +22,9 @@ const types = ['initially', 'medially', 'finally'];
 // #Open and close model
   const handleClose = () => setshow(false);
   const handleShow = () => setshow(true);
+  const successMsgAlert = () => {
+    Swal.fire('Phonetics Example added')
+  };
   const typeList = types.map((type, i) => {   
     return(
         <>
@@ -70,23 +76,42 @@ const handleSubmit = (e) => {
         .post( `${REACT_APP_HOST}addExample.php`, uploadData)
         .then((res) => {
         console.log(res);
-        // if (res.data>0){
-        //     console.log('insert into database')
-        //     setflashmsgshow(false)
-        //     setletterError(false)
-        //     setname("")
-        //     handleClose()
-        //     successMsgAlert()
-        //     fetchData()
-        // }if (res.data==-1){
-        //     console.log('letter exit in database')
-        //     setletterError(true)
-        //     setflashmsgshow(false)
-        // }
+        if (res.data=='file'){
+          setFileError(true);
+        }
+        if (res.data == 'letter'){
+          setwordExitError(true);
+          
+        }
+        if (res.data>0){
+          handleClose()
+          successMsgAlert()
+          
+        }
+       
+      
         
-        })
+    })
         .catch((error) => console.log(error));
     }};
+    const alertFileError = () =>  {
+      return (
+        <div className="row d-flex justify-content-center">
+            <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setFileError(false)} show={FileError} delay={3000} autohide>
+              <Toast.Body>Phonetics Voice Already Exit!</Toast.Body>
+            </Toast>
+        </div>
+      );
+    }
+    const alertExitwordError = () =>  {
+      return (
+        <div className="row d-flex justify-content-center">
+            <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordExitError(false)} show={wordExitError} delay={3000} autohide>
+              <Toast.Body>Phonetics word Already Exit!</Toast.Body>
+            </Toast>
+        </div>
+      );
+    }
     const alertleterError = () =>  {
         return (
           <div className="row d-flex justify-content-center">
@@ -195,6 +220,9 @@ const handleSubmit = (e) => {
               {wordError ? (
                 alertwordError()
               ) : null}
+               {wordExitError ? (
+                alertExitwordError()
+              ) : null}
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">
@@ -206,6 +234,9 @@ const handleSubmit = (e) => {
              
               {voiceError ? (
                 alertvoiceError()
+              ) : null}
+              {FileError ? (
+                alertFileError()
               ) : null}
            
               <Modal.Footer>
