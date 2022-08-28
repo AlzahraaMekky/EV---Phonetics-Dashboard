@@ -35,38 +35,62 @@ const [voiceError, setvoiceError] = useState(false);
     const validate = () => {
     if (letter == "") {
         setletterError(true)
+        
     } else {
         setletterError(false)
+       
     }
+    console.log('letterError',letterError)
     if (word1 == "" ||word2==""||word3=="") {
         setwordError(true)
+       
     } else {
         setwordError(false)
+      
     }
+    console.log('wordError',wordError)
     if (!voice1||!voice2||!voice3) {
         setvoiceError(true)
+        
     } else {
         setvoiceError(false)
+       
     }
-    if (!image1||!image3||!image3) {
+    console.log('voiceError',voiceError)
+    if (!image1||!image2||!image3) {
         setimageError(true)
+       
     } else {
         setimageError(false)
+       
     }
-
-    if (letter == "" ||word1==""||word2==""||word3==""||!voice1||voice2||voice3||!image1||!image2||!image3) {
+    console.log('imageError',imageError)
+    if (letter == "" ||word1==""||word2==""||word3==""||voice1==""||voice2==""||voice3==""||image1==""||image2==""||image3=="") {
         return false;
     } else {
         return true;
     }
-    };
+    
+    }
+    console.log(letter,word1,word2,word3)
+
 const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
+    console.log('isValid',isValid)
+    console.log('before submit')
     if (isValid) {
+    console.log('after submit')
     const uploadData = new FormData();
     uploadData.append("phonetic_id", letter)
-    let items = [{"order": 1, "word":word1,"voice":voice1 },{"order": 2, "word":word2,"voice":voice2},{"order": 3, "word":word3,"voice":voice3}]
+    uploadData.append("voice1", voice1, voice1.name);
+    uploadData.append("voice2", voice2, voice2.name);
+    uploadData.append("voice3", voice3, voice3.name);
+    uploadData.append("image1", image1, image1.name);
+    uploadData.append("image2", image2, image2.name);
+    uploadData.append("image3", image3, image3.name);
+    let items = '[{"order": "1", "word":"' + word1 + '","image":"image1","voice":"voice1"},{"order": "2", "word":"' + word2 + '","image":"image2","voice":"voice2"},{"order": "3", "word":"'+word3+'","image":"image3","voice":"voice3"}]'
+    console.log('items',items)
     uploadData.append("items", items)
   
     axios
@@ -101,7 +125,7 @@ const handleSubmit = (e) => {
     const alertImageError = () =>  {
         return (
           <div className="row d-flex justify-content-center">
-              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setFileError(false)} show={FileError} delay={3000} autohide>
+              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
                 <Toast.Body>Phonetics Image Already Exit!</Toast.Body>
               </Toast>
           </div>
@@ -238,6 +262,9 @@ const handleSubmit = (e) => {
                 <input type="file"  className="form-control" onChange={(evt) => setimage3(evt.target.files[0])}
                  aria-label="image" aria-describedby="basic-addon1"/>
               </div>
+              {imageError ? (
+                alertImageError()
+              ) : null}
               <Modal.Footer>
                 <Button
                   type="submit"
