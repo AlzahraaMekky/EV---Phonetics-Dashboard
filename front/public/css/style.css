@@ -3472,14 +3472,15 @@ table.projects tr td:first-child {
     box-shadow: #fff 4px 4px 0 0,#1ed085 4px 4px 0 1px;
   }
   .boxContainer{
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
+    border: 1px solid #15283c ;
+    border-radius: 5px;
+    margin-bottom: 5px;
   }
   
   .boxlayout {
-    padding: 4px;
-    /* margin: 5px; */
-  
+    margin-bottom: 5px;
   }
   .badge-light {
     color: #15283c;
@@ -3490,4 +3491,14 @@ table.projects tr td:first-child {
     height: 15px;
     padding: 0.25em 0.2em;
     font-size: 80%;
+}
+.letterDelete{
+    margin-left: -5px;
+    border: none;
+    cursor: pointer;
+}
+.letterExample{
+   border: none;
+   background: none;
+   cursor: pointer;
 }

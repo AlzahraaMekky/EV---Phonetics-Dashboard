@@ -25,7 +25,21 @@ function QuizOnePhonetics() {
     fetchData();
   }, []);
 
-
+  const handleDeleteQuiz=(id)=>{
+    console.log('quiz_id',id)
+    const uploadData = new FormData();
+    uploadData.append("quiz_id", id)
+    axios
+    .post( `${REACT_APP_HOST}deleteQuiz1.php`, uploadData)
+    .then((res) => {
+    console.log(res);
+    if (res.data=='delete'){
+      fetchData();
+    } 
+  })
+    .catch((error) => console.log(error));
+  }
+  
   const handleActiveClass = (i) => {
     setIsActive(i);
     console.log('IsActive',isActive)
@@ -76,32 +90,50 @@ function QuizOnePhonetics() {
         </>
     )
   });
-  const PhoneticsQuiz1List = PhoneticsQuizOne.map((quiz, i) => {
-    return (
-      <>
-      <div className="col-md-6 specialcol">
-      <div className="boxContainer">
-       <div className="boxlayout">
-            <div>
-                <img
-                className="img-responsive"
-                src="http://localhost:3000/images/icons/scrabble.png"
-                alt="#"
-              />
-             <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {quiz.word}</span>
-
+  const PhoneticsQuiz1List = ()=>{
+    let PhoneticsQuizOneLength = PhoneticsQuizOne.length
+    if (PhoneticsQuizOneLength >0){
+      return(
+        PhoneticsQuizOne.map((quiz, i) =>
+        <div className="col-md-6">
+          <div className="row">
+            <div className="col">
+              <div className="boxlayout">
+                <div>
+                    <img
+                    className="img-responsive"
+                    src="http://localhost:3000/images/icons/scrabble.png"
+                    alt="#"
+                  />
+                <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {quiz.word}</span>
+    
+                </div>
+              </div>
             </div>
+            <div className="col">
+              <div  className="boxlayout">
+              <audio key={quiz.id}  controls className="Play">
+                <source src={'https://mysqltest955.000webhostapp.com/'+quiz.voice}  ttype="audio/mp3"></source>
+              </audio>
+            </div>
+            </div>
+            <div className="col">
+            <div  className="boxlayout">
+              <button className="letterExample"  onClick={()=>handleDeleteQuiz(quiz.id)}>
+                    <img src="http://localhost:3000/images/icons/delete.png"/>
+              </button>
+            </div>
+            </div>
+          </div>
         </div>
-        <div  className="boxlayout">
-          <audio key={quiz.id}  controls className="Play">
-            <source src={'https://mysqltest955.000webhostapp.com/'+quiz.voice}  ttype="audio/mp3"></source>
-          </audio>
-        </div>
-       </div>  
-      </div>
-      </>
-    );
-  });
+      ))
+
+    }else{
+      return(<p>No Quiz</p>)
+    }
+  }
+  
+ 
   return (
     <div className="midde_cont">
       <div className="container-fluid">
@@ -113,7 +145,7 @@ function QuizOnePhonetics() {
         <div className="row column1">
           {typeList}
         </div>
-        <div className="row column1">{PhoneticsQuiz1List}</div>
+        <div className="row column1">{PhoneticsQuiz1List()}</div>
      
       </div>
     </div>

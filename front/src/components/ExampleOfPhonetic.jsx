@@ -25,6 +25,21 @@ function PhoneticsSamples() {
     fetchData();
   }, []);
 
+const handleDeleteExample=(id)=>{
+  console.log('ExampleID',id)
+  console.log('letterId',id)
+  const uploadData = new FormData();
+  uploadData.append("example_id", id)
+  axios
+  .post( `${REACT_APP_HOST}deleteExample.php`, uploadData)
+  .then((res) => {
+  console.log(res);
+  if (res.data=='delete'){
+    fetchData();
+  } 
+})
+  .catch((error) => console.log(error));
+}
 
   const handleActiveClass = (i) => {
     setIsActive(i);
@@ -76,12 +91,16 @@ function PhoneticsSamples() {
         </>
     )
   });
-  const PhoneticsExamplesList = PhoneticsExamples.map((example, i) => {
-    return (
-      <>
-      <div className="col-md-6 specialcol">
-      <div className="boxContainer">
-       <div className="boxlayout">
+  const PhoneticsExamplesList =()=>{
+    let phoneticssExampleLength = PhoneticsExamples.length
+    console.log('phoneticssExampleLength',phoneticssExampleLength)
+    if (phoneticssExampleLength >0){
+       return(
+        PhoneticsExamples.map((example, i) => 
+        <div className="col-md-6">
+        <div className="row">
+          <div className="col">
+          <div className="boxlayout">
             <div>
                 <img
                 className="img-responsive"
@@ -92,16 +111,32 @@ function PhoneticsSamples() {
 
             </div>
         </div>
-        <div  className="boxlayout">
+          </div>
+          <div className="col">
+          <div  className="boxlayout">
           <audio key={example.id}  controls className="Play">
-            <source src={'https://mysqltest955.000webhostapp.com'+example.voice}  ttype="audio/mp3"></source>
+            <source src={'https://mysqltest955.000webhostapp.com/'+example.voice}  ttype="audio/mp3"></source>
           </audio>
+          </div>
+          </div>
+          <div className="col">
+          <div  className="boxlayout">
+         
+          <button className="letterExample" onClick={()=>handleDeleteExample(example.id)}>
+                <img src="http://localhost:3000/images/icons/delete.png"/>
+            </button>
         </div>
-       </div>  
-      </div>
-      </>
-    );
-  });
+          </div>
+        </div>
+  
+        </div>
+    )
+    )  
+    }else{
+      return(<p>No Examples</p>)
+    }
+  }
+
   return (
     <div className="midde_cont">
       <div className="container-fluid">
@@ -113,7 +148,7 @@ function PhoneticsSamples() {
         <div className="row column1">
           {typeList}
         </div>
-        <div className="row column1">{PhoneticsExamplesList}</div>
+        <div className="row column1">{PhoneticsExamplesList()}</div>
      
       </div>
     </div>

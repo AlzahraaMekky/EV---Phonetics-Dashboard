@@ -23,10 +23,10 @@ function LettersList() {
   const PhoneticsList = Phonetics.map((phonetics, i) => {
     return (
       <>
-        <div key={i} className="col-md-2">
+        <div key={phonetics.id} className="col-md-2">
           <Link
             to={`/phoneticssexample/${phonetics.name}`}
-            className="button-50"
+            className="button-50 button"
             role="button"
           >
             {phonetics.name}
@@ -37,13 +37,10 @@ function LettersList() {
     );
   });
   return (
-    <div className="midde_cont">
-      <div className="container-fluid">
-        <div className="row column1">
+    <div className="row column1">
           {PhoneticsList}
-        </div>
-      </div>
     </div>
+  
   );
 }
 export default LettersList;

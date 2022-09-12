@@ -29,6 +29,20 @@ function PhoneticsList() {
     useEffect(() => {
       fetchData();
     }, []);
+const handleDeleteLetter =(id)=>{
+  console.log('letterId',id)
+  const uploadData = new FormData();
+  uploadData.append("phonetic_id", id)
+  axios
+  .post( `${REACT_APP_HOST}deletePhonetic.php`, uploadData)
+  .then((res) => {
+  console.log(res);
+  if (res.data=='delete'){
+    fetchData();
+  } 
+})
+  .catch((error) => console.log(error));
+}
 
  
     const PhoneticsList = Phonetics.map((phonetics, i) => {
@@ -37,11 +51,14 @@ function PhoneticsList() {
           <div className="col-md-2">
             <Link key={phonetics.id} 
               to={`/phoneticssexample/${phonetics.name}`}
-              className="button-50"
+              className="button-50 button"
               role="button"
             >
               {phonetics.name}
             </Link>
+            <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetics.id)}>
+                <img src="http://localhost:3000/images/icons/delete.png"/>
+            </button>
           </div>
           <div className="custom-margin"></div>
         </>

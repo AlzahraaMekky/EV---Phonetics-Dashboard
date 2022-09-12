@@ -15,9 +15,7 @@ function PhoneticsList() {
           </div>
         <AddExample/>
         </div>
-        <div className="row column1">
           <LettersList/>
-        </div>
       </div>
     </div>
   );

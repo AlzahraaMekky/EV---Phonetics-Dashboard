@@ -15,9 +15,7 @@ function Quiz_2() {
           </div>
           <AddQuiztwo/>
         </div>
-        <div className="row column1">
           <LettersList4Quiz2/>
-        </div>
       </div>
     </div>
   );
