@@ -4,7 +4,7 @@ import { Button, Modal } from "react-bootstrap";
 import LettersSelectOption from "./LettersSelectOption";
 import Toast from 'react-bootstrap/Toast';
 import Swal from "sweetalert2";
-function AddQuizOne() {
+function AddQuizThree() {
 const { REACT_APP_HOST } = process.env;
 const [show, setshow] = useState(false);
 const [word1, setword1] = useState("");
@@ -28,7 +28,7 @@ const [voiceError, setvoiceError] = useState(false);
   const handleClose = () => setshow(false);
   const handleShow = () => setshow(true);
   const successMsgAlert = () => {
-    Swal.fire('Phonetics Quiz 1 added')
+    Swal.fire('Phonetics Quiz 3 added')
   };
 
     //  form validation
@@ -93,7 +93,7 @@ const handleSubmit = (e) => {
     console.log('items',items)
     uploadData.append("items", items)
     axios
-        .post( `${REACT_APP_HOST}AddQuiz1.php`, uploadData)
+        .post( `${REACT_APP_HOST}addQuiz3.php`, uploadData)
         .then((res) => {
         console.log(res);
         let respo =res.data;
@@ -104,6 +104,7 @@ const handleSubmit = (e) => {
                 setFileError(true);
               }
         }
+       
         if (respo == 'word'){
           setwordExitError(true);
           
@@ -185,14 +186,14 @@ const handleSubmit = (e) => {
             <img
                 src="http://localhost:3000/images/icons/plus.png"
               />
-            <span style={{paddingLeft:'5px'}}>Add Quiz One</span>
+            <span style={{paddingLeft:'5px'}}>Add Quiz Three</span>
             </Button>
         </div>
         <div className="row">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>
-              <h6>Add Quiz One </h6>
+              <h6>Add Quiz Three </h6>
             </Modal.Title>
             <button onClick={handleClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -279,7 +280,7 @@ const handleSubmit = (e) => {
                   }}
                  
                 >
-                  Save Quiz Two
+                  Save Quiz Three
                 </Button>
               </Modal.Footer>
             </form>
@@ -290,4 +291,4 @@ const handleSubmit = (e) => {
       );
 }
 
-export default AddQuizOne;
+export default AddQuizThree;

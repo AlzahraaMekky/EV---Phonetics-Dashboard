@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function LettersList4Quiz2() {
+function LettersList4Quiz3() {
   const { REACT_APP_HOST } = process.env;
   const [Phonetics, SetPhonetics] = useState([]);
   const fetchData = async () => {
@@ -25,7 +25,7 @@ function LettersList4Quiz2() {
       <>
         <div className="col-md-2">
           <Link  key={phonetic.id} 
-            to={`/quiz-two/${phonetic.name}`}
+            to={`/quiz-Three/${phonetic.name}`}
             className="button-50"
             role="button"
           >
@@ -46,4 +46,4 @@ function LettersList4Quiz2() {
     </div>
   );
 }
-export default LettersList4Quiz2;
+export default LettersList4Quiz3;

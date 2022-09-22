@@ -3476,11 +3476,12 @@ table.projects tr td:first-child {
     flex-direction: row; */
     border: 1px solid #15283c ;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom:20px;
+    padding: 10px;
   }
   
   .boxlayout {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
   }
   .badge-light {
     color: #15283c;
@@ -3502,3 +3503,12 @@ table.projects tr td:first-child {
    background: none;
    cursor: pointer;
 }
+.quiz1-img{
+    width: 20%;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+.modal-dialog{
+    max-width:50%  !important;
+  }

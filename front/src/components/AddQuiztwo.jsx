@@ -7,30 +7,32 @@ import Swal from "sweetalert2";
 function AddQuiztwo() {
 const { REACT_APP_HOST } = process.env;
 const [show, setshow] = useState(false);
-const [word1, setword1] = useState("");
-const [word2, setword2] = useState("");
-const [word3, setword3] = useState("");
+const [word, setword] = useState("");
 const [wordError, setwordError] = useState(false);
 const [letter, setletter] = useState("");
 const [letterError, setletterError] = useState(false);
 const [FileError, setFileError] = useState(false);
 const [wordExitError, setwordExitError] = useState(false);
-const [imageError, setimageError] = useState(false);
-const [voice1, setvoice1] = useState();
-const [voice2, setvoice2] = useState();
-const [voice3, setvoice3] = useState();
-const [image1, setimage1] = useState();
-const [image2, setimage2] = useState();
-const [image3, setimage3] = useState();
+const [voice, setvoice] = useState();
 const [voiceError, setvoiceError] = useState(false);
-
+const [type, settype] = useState("");
+const types = ['initially', 'medially', 'finally'];
+const [typeError, settypeError] = useState(false);
 // #Open and close model
   const handleClose = () => setshow(false);
   const handleShow = () => setshow(true);
   const successMsgAlert = () => {
-    Swal.fire('Phonetics Example added')
+    Swal.fire('Phonetics Quiz 2 added')
   };
-
+  const typeList = types.map((type, i) => {   
+    return(
+        <>
+         <option key={i} value={type}>
+            {type}
+        </option>
+        </>
+    )
+  });
     //  form validation
     const validate = () => {
     if (letter == "") {
@@ -41,7 +43,12 @@ const [voiceError, setvoiceError] = useState(false);
        
     }
     console.log('letterError',letterError)
-    if (word1 == "" ||word2==""||word3=="") {
+    if (type == "") {
+      settypeError(true)
+  } else {
+      settypeError(false)
+  }
+    if (word == "") {
         setwordError(true)
        
     } else {
@@ -49,7 +56,7 @@ const [voiceError, setvoiceError] = useState(false);
       
     }
     console.log('wordError',wordError)
-    if (!voice1||!voice2||!voice3) {
+    if (!voice) {
         setvoiceError(true)
         
     } else {
@@ -57,22 +64,14 @@ const [voiceError, setvoiceError] = useState(false);
        
     }
     console.log('voiceError',voiceError)
-    if (!image1||!image2||!image3) {
-        setimageError(true)
-       
-    } else {
-        setimageError(false)
-       
-    }
-    console.log('imageError',imageError)
-    if (letter == "" ||word1==""||word2==""||word3==""||voice1==""||voice2==""||voice3==""||image1==""||image2==""||image3=="") {
+   
+    if (letter == "" ||word==""||voice==""||type=="") {
         return false;
     } else {
         return true;
     }
     
     }
-    console.log(letter,word1,word2,word3)
 
 const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,28 +82,26 @@ const handleSubmit = (e) => {
     console.log('after submit')
     const uploadData = new FormData();
     uploadData.append("phonetic_id", letter)
-    uploadData.append("voice1", voice1, voice1.name);
-    uploadData.append("voice2", voice2, voice2.name);
-    uploadData.append("voice3", voice3, voice3.name);
-    uploadData.append("image1", image1, image1.name);
-    uploadData.append("image2", image2, image2.name);
-    uploadData.append("image3", image3, image3.name);
-    let items = '[{"order": "1", "word":"' + word1 + '","image":"image1","voice":"voice1"},{"order": "2", "word":"' + word2 + '","image":"image2","voice":"voice2"},{"order": "3", "word":"'+word3+'","image":"image3","voice":"voice3"}]'
-    console.log('items',items)
-    uploadData.append("items", items)
-  
+    uploadData.append("voice", voice, voice.name);
+    uploadData.append("word", word);
+    uploadData.append("type", type);
     axios
         .post( `${REACT_APP_HOST}addQuiz2.php`, uploadData)
         .then((res) => {
         console.log(res);
-        if (res.data=='file'){
-          setFileError(true);
+        let respo =res.data;
+        console.log('respo',respo,typeof(respo))
+        let word = 'file';
+        if (typeof respo === "string") {
+            if (respo.includes(word)){
+                setFileError(true);
+              }
         }
-        if (res.data == 'word'){
+        if (respo == 'word'){
           setwordExitError(true);
           
         }
-        if (res.data>0){
+        if (respo>0){
           handleClose()
           successMsgAlert()
           
@@ -122,15 +119,7 @@ const handleSubmit = (e) => {
         </div>
       );
     }
-    const alertImageError = () =>  {
-        return (
-          <div className="row d-flex justify-content-center">
-              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
-                <Toast.Body>Phonetics Image Already Exit!</Toast.Body>
-              </Toast>
-          </div>
-        );
-      }
+ 
     const alertExitwordError = () =>  {
       return (
         <div className="row d-flex justify-content-center">
@@ -164,6 +153,15 @@ const handleSubmit = (e) => {
           <div className="row d-flex justify-content-center">
               <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setvoiceError(false)} show={voiceError} delay={3000} autohide>
                 <Toast.Body>Phonetics voice can not be empty!</Toast.Body>
+              </Toast>
+          </div>
+        );
+      }
+      const alerttypeError = () =>  {
+        return (
+          <div className="row d-flex justify-content-center">
+              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => settypeError(false)} show={typeError} delay={3000} autohide>
+                <Toast.Body>Phonetics Type can not be empty!</Toast.Body>
               </Toast>
           </div>
         );
@@ -212,18 +210,31 @@ const handleSubmit = (e) => {
               {letterError ? (
                 alertleterError()
               ) : null}
-     
+                <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                  <i class="fas fa-text-width"></i></span>
+                </div>
+                <select
+                onChange={(evt) => settype(evt.target.value)}
+                class="custom-select"
+                name="type"
+                >
+                <option selected>Select Phonetics Type..</option>
+                  {typeList}
+                </select>
+            </div>
+            {typeError ? (
+                alerttypeError()
+              ) : null}
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">
                   <i class="fab fa-wordpress-simple"></i></span>
                 </div>
-                <input type="text" className="form-control" onChange={(evt) => setword1(evt.target.value)}
-                placeholder="Add Word One" aria-label="word1" aria-describedby="basic-addon1"/>
-                <input type="text" className="form-control" onChange={(evt) => setword2(evt.target.value)}
-                placeholder="Add Word Two" aria-label="word2" aria-describedby="basic-addon1"/>
-                <input type="text" className="form-control" onChange={(evt) => setword3(evt.target.value)}
-                placeholder="Add Word Three" aria-label="word3" aria-describedby="basic-addon1"/>
+                <input type="text" className="form-control" onChange={(evt) => setword(evt.target.value)}
+                placeholder="Add Word" aria-label="word1" aria-describedby="basic-addon1"/>
+              
               </div>
               {wordError ? (
                 alertwordError()
@@ -236,12 +247,8 @@ const handleSubmit = (e) => {
                   <span className="input-group-text" id="basic-addon1">
                   <i class="fas fa-volume"></i></span>
                 </div>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice1(evt.target.files[0])}
+                <input type="file"  className="form-control" onChange={(evt) => setvoice(evt.target.files[0])}
                  aria-label="voice" aria-describedby="basic-addon1"/>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice2(evt.target.files[0])}
-                 aria-label="voice" aria-describedby="basic-addon1"/>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice3(evt.target.files[0])}
-                 aria-label="voice3"aria-describedby="basic-addon1"/>
               </div>
              
               {voiceError ? (
@@ -249,21 +256,6 @@ const handleSubmit = (e) => {
               ) : null}
               {FileError ? (
                 alertFileError()
-              ) : null}
-            <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text" id="basic-addon1">
-                  <i class="fas fa-volume"></i></span>
-                </div>
-                <input type="file"  className="form-control" onChange={(evt) => setimage1(evt.target.files[0])}
-                 aria-label="image" aria-describedby="basic-addon1"/>
-                <input type="file"  className="form-control" onChange={(evt) => setimage2(evt.target.files[0])}
-                aria-label="image" aria-describedby="basic-addon1"/>
-                <input type="file"  className="form-control" onChange={(evt) => setimage3(evt.target.files[0])}
-                 aria-label="image" aria-describedby="basic-addon1"/>
-              </div>
-              {imageError ? (
-                alertImageError()
               ) : null}
               <Modal.Footer>
                 <Button

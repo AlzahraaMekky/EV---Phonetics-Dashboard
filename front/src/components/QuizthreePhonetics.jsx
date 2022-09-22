@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import Toast from 'react-bootstrap/Toast';
 import Swal from "sweetalert2";
-function QuiztwoPhonetics() {
+function QuizthreePhonetics() {
   const { REACT_APP_HOST } = process.env;
   const [show, setshow] = useState(false);
   const [FileError, setFileError] = useState(false);
@@ -27,7 +27,7 @@ function QuiztwoPhonetics() {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
-        `${REACT_APP_HOST}getQuiz-1.php?name=${phonetic_name}`
+        `${REACT_APP_HOST}getQuiz3.php?name=${phonetic_name}`
       );
       SetPhoneticsQuizOne(response);
       console.log('PhoneticsQuizOne',response);
@@ -39,7 +39,7 @@ function QuiztwoPhonetics() {
 const handleClose = () => setshow(false);
 const handleShow = () => setshow(true);
 const successMsgAlert = () => {
-  Swal.fire('Phonetics Quiz 1 added')
+  Swal.fire('Phonetics Quiz 3 added')
 };
 
   useEffect(() => {
@@ -203,7 +203,7 @@ const handleSubmit = (e) => {
       <div className="container-fluid">
       <div className="row column_title page_title">
           <div className="col-6">
-              <h2>Phonetics Quiz Two for Letter {phonetic_name}</h2>
+              <h2>Phonetics Quiz Three for Letter {phonetic_name}</h2>
           </div>
           <div className="col-6 d-flex justify-content-end">
         <Button
@@ -216,7 +216,7 @@ const handleSubmit = (e) => {
             <img
                 src="http://localhost:3000/images/icons/plus.png"
               />
-            <span style={{paddingLeft:'5px'}}>Add Quiz One</span>
+            <span style={{paddingLeft:'5px'}}>Add Quiz Three</span>
             </Button>
         </div>
         </div>
@@ -226,7 +226,7 @@ const handleSubmit = (e) => {
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>
-              <h6>Add Quiz One </h6>
+              <h6>Add Quiz Three </h6>
             </Modal.Title>
             <button onClick={handleClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -297,7 +297,7 @@ const handleSubmit = (e) => {
                   }}
                  
                 >
-                  Save Quiz Two
+                  Save Quiz Three
                 </Button>
               </Modal.Footer>
             </form>
@@ -308,4 +308,4 @@ const handleSubmit = (e) => {
     </div>
   );
 }
-export default QuiztwoPhonetics;
+export default QuizthreePhonetics;

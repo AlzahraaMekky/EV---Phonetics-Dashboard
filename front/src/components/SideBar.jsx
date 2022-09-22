@@ -60,6 +60,12 @@ function SideBar() {
                     <span class="badge badge-light">2</span>
                   </Link>
                 </li>
+                <li>
+                <Link to={'/quiz-Three'}>
+                    <span>Quiz</span>
+                    <span class="badge badge-light">3</span>
+                  </Link>
+                </li>
               </ul>
             </li>
             <li>

@@ -45,18 +45,18 @@ const handleDeleteLetter =(id)=>{
 }
 
  
-    const PhoneticsList = Phonetics.map((phonetics, i) => {
+    const PhoneticsList = Phonetics.map((phonetic, i) => {
       return (
         <>
           <div className="col-md-2">
-            <Link key={phonetics.id} 
-              to={`/phoneticssexample/${phonetics.name}`}
+            <Link key={phonetic.id} 
+              to={`/phoneticssexample/${phonetic.name}`}
               className="button-50 button"
               role="button"
             >
-              {phonetics.name}
+              {phonetic.name}
             </Link>
-            <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetics.id)}>
+            <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
                 <img src="http://localhost:3000/images/icons/delete.png"/>
             </button>
           </div>
