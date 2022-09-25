@@ -123,8 +123,23 @@ const successMsgAlert = () => {
     }
     
     }
-const handleDeleteQuiz1=()=>{
-
+const handleDeleteQuiz1=(id,word,j)=>{
+  console.log('QuizID',id)
+  console.log('word',word)
+  const uploadData = new FormData();
+  uploadData.append("Quiz_id", id)
+  uploadData.append("word", word)
+  uploadData.append("wordCount", j)
+  console.log(j)
+  axios
+  .post( `${REACT_APP_HOST}deleteQuiz1.php`, uploadData)
+  .then((res) => {
+  console.log('res.data',res.data);
+  if (res.data=='updated'){
+    fetchData();
+  } 
+})
+  .catch((error) => console.log(error));
 }
 const handleSubmit = (e) => {
   e.preventDefault();
@@ -149,12 +164,14 @@ const handleSubmit = (e) => {
       .post( `${REACT_APP_HOST}AddQuiz1_1.php`, uploadData)
       .then((res) => {
       console.log(res);
-      let respo =res;
-      console.log('respo',respo,typeof(respo))
-      let word = 'file';
-      // if (respo.includes(word)){
-      //   setFileError(true);
-      // }
+      let respo =res.data;
+        console.log('respo',respo,typeof(respo))
+        let word = 'file';
+        if (typeof respo === "string") {
+            if (respo.includes(word)){
+                setFileError(true);
+              }
+        }
       if (respo == 'word'){
         setwordExitError(true);
         
@@ -171,7 +188,7 @@ const handleSubmit = (e) => {
   const PhoneticsQuizOneList = PhoneticsQuizOne.map((quiz, i) => {
     return ( 
             <>
-                {quiz.data.map(q => 
+                {quiz.data.map((q,j) => 
                   <div className="col-md-4">
                   <div className="boxContainer">
                       <div className="boxlayout">
@@ -181,7 +198,7 @@ const handleSubmit = (e) => {
                             alt="#"
                         />
                         <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {q.correct_word}</span>
-                        <button className="letterExampl" style={{float:'right',border:'none'}} onClick={()=>handleDeleteQuiz1(q.id)}>
+                        <button className="letterExampl" style={{float:'right',border:'none'}}onClick={()=>handleDeleteQuiz1(q.quiz_id,q.correct_word,j)}>
                             <img src="http://localhost:3000/images/icons/delete.png"/>
                         </button>
                       </div>
@@ -203,7 +220,7 @@ const handleSubmit = (e) => {
       <div className="container-fluid">
       <div className="row column_title page_title">
           <div className="col-6">
-              <h2>Phonetics Quiz Two for Letter {phonetic_name}</h2>
+              <h2>Phonetics Quiz One for Letter {phonetic_name}</h2>
           </div>
           <div className="col-6 d-flex justify-content-end">
         <Button

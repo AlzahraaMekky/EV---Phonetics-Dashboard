@@ -140,10 +140,14 @@ const handleDeleteQuiz2=(id)=>{
     axios
         .post( `${REACT_APP_HOST}addQuiz2_2.php`, uploadData)
         .then((res) => {
-        console.log(res);
-        if (res.data=='file'){
-          setFileError(true);
-        }
+        let respo =res.data;
+          console.log('respo',respo,typeof(respo))
+          let word = 'file';
+          if (typeof respo === "string") {
+              if (respo.includes(word)){
+                  setFileError(true);
+                }
+          }
         if (res.data == 'word'){
           setwordExitError(true);
           

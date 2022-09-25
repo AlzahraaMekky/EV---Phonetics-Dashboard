@@ -23,13 +23,13 @@ function QuizthreePhonetics() {
   const [voiceError, setvoiceError] = useState(false);
   const { phonetic_name } = useParams();
   console.log('phonetic_name',phonetic_name)
-  const [PhoneticsQuizOne, SetPhoneticsQuizOne] = useState([]);
+  const [PhoneticsQuizThree, SetPhoneticsQuizThree] = useState([]);
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
         `${REACT_APP_HOST}getQuiz3.php?name=${phonetic_name}`
       );
-      SetPhoneticsQuizOne(response);
+      SetPhoneticsQuizThree(response);
       console.log('PhoneticsQuizOne',response);
     } catch (error) {
       console.error(error.message);
@@ -123,9 +123,25 @@ const successMsgAlert = () => {
     }
     
     }
-const handleDeleteQuiz1=()=>{
 
-}
+const handleDeleteQuiz3=(id,word,j)=>{
+    console.log('QuizID',id)
+    console.log('word',word)
+    const uploadData = new FormData();
+    uploadData.append("Quiz_id", id)
+    uploadData.append("word", word)
+    uploadData.append("wordCount", j)
+    console.log(j)
+    axios
+    .post( `${REACT_APP_HOST}deleteQuiz3.php`, uploadData)
+    .then((res) => {
+    console.log('res.data',res.data);
+    if (res.data=='updated'){
+      fetchData();
+    } 
+  })
+    .catch((error) => console.log(error));
+  }
 const handleSubmit = (e) => {
   e.preventDefault();
   const isValid = validate();
@@ -149,12 +165,14 @@ const handleSubmit = (e) => {
       .post( `${REACT_APP_HOST}AddQuiz1_1.php`, uploadData)
       .then((res) => {
       console.log(res);
-      let respo =res;
+      let respo =res.data;
       console.log('respo',respo,typeof(respo))
       let word = 'file';
-      // if (respo.includes(word)){
-      //   setFileError(true);
-      // }
+      if (typeof respo === "string") {
+          if (respo.includes(word)){
+              setFileError(true);
+            }
+      }
       if (respo == 'word'){
         setwordExitError(true);
         
@@ -168,10 +186,10 @@ const handleSubmit = (e) => {
   })
       .catch((error) => console.log(error));
   }};
-  const PhoneticsQuizOneList = PhoneticsQuizOne.map((quiz, i) => {
+  const PhoneticsQuizthreeList = PhoneticsQuizThree.map((quiz, i) => {
     return ( 
             <>
-                {quiz.data.map(q => 
+                {quiz.data.map((q,j)=> 
                   <div className="col-md-4">
                   <div className="boxContainer">
                       <div className="boxlayout">
@@ -181,7 +199,7 @@ const handleSubmit = (e) => {
                             alt="#"
                         />
                         <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {q.correct_word}</span>
-                        <button className="letterExampl" style={{float:'right',border:'none'}} onClick={()=>handleDeleteQuiz1(q.id)}>
+                        <button className="letterExampl" style={{float:'right',border:'none'}} onClick={()=>handleDeleteQuiz3(q.quiz_id,q.correct_word,j)}>
                             <img src="http://localhost:3000/images/icons/delete.png"/>
                         </button>
                       </div>
@@ -221,7 +239,7 @@ const handleSubmit = (e) => {
         </div>
         </div>
        
-        <div className="row column1">{PhoneticsQuizOneList}</div>
+        <div className="row column1">{PhoneticsQuizthreeList}</div>
         <div className="row">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
