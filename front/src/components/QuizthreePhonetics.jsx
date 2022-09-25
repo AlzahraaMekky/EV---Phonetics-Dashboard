@@ -162,7 +162,7 @@ const handleSubmit = (e) => {
   console.log('items',items)
   uploadData.append("items", items)
   axios
-      .post( `${REACT_APP_HOST}AddQuiz1_1.php`, uploadData)
+      .post( `${REACT_APP_HOST}AddQuiz3_1.php`, uploadData)
       .then((res) => {
       console.log(res);
       let respo =res.data;
@@ -180,6 +180,7 @@ const handleSubmit = (e) => {
       if (respo>0){
         handleClose();
         successMsgAlert();
+        fetchData();
         
       }
 
