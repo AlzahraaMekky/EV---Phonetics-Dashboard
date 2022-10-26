@@ -1,7 +1,8 @@
 import background from "./background/pattern_h.png";
 import { Link } from "react-router-dom";
+import { ReactSession }  from 'react-client-session';
 import React from "react";
-
+const user = ReactSession.get("username");
 function SideBar() {
   return (
     <>
@@ -35,7 +36,7 @@ function SideBar() {
           <h4>Phonetics Dashboard</h4>
           <ul className="list-unstyled components">
             <li className="active">
-            <Link to={'/'}>
+            <Link to={'/PhoneticsList'}>
                 <img
                   style={{ marginRight: "5px" }}
                   src="http://localhost:3000/images/icons/to-do-list.png"

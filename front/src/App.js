@@ -9,7 +9,8 @@ import Quiz_3 from './components/Quiz_3';
 import QuizOnePhonetics from './components/QuizOnePhonetics';
 import QuiztwoPhonetics from './components/QuiztwoPhonetics';
 import QuizthreePhonetics from './components/QuizthreePhonetics';
-
+import Login from './components/Login';
+import Logout from './components/Logout';
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -25,7 +26,8 @@ function App() {
         <div id="content">
           <NavBar/>
           <Routes>
-            <Route path="/" element={<PhoneticsList />} /> 
+            <Route path="/" element={<Login />} /> 
+            <Route path="/PhoneticsList" element={<PhoneticsList />} /> 
             <Route path="/phoneticsexamples/" element={<Examples />} /> 
             <Route path="/phoneticssexample/:phonetic_name" element={<ExampleOfPhonetic />} /> 
             <Route path="/quiz-One/:phonetic_name" element={<QuizOnePhonetics/>} /> 
@@ -34,6 +36,7 @@ function App() {
             <Route path="/quiz-One" element={<Quiz_1 />} /> 
             <Route path="/quiz-two" element={<Quiz_2 />} /> 
             <Route path="/quiz-Three" element={<Quiz_3 />} /> 
+            <Route path="/logout" element={<Logout />} /> 
           </Routes>
         </div> 
         </div> 

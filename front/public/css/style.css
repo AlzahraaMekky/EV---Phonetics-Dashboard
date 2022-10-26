@@ -706,7 +706,8 @@ a:focus {
     font-family: 'Font Awesome\ 5 Free';
     font-weight: 900;
     border: none;
-    font-size: 18px;
+    font-size: 18px; 
+    
 }
 
 .icon_info ul.user_profile_dd {
@@ -3511,4 +3512,28 @@ table.projects tr td:first-child {
 }
 .modal-dialog{
     max-width:50%  !important;
+  }
+ .shadow-strong{
+    box-shadow: 0 2px 25px -5px rgba(0,0,0,.16),0 25px 21px -5px rgba(0,0,0,.1)!important;
+
+ }
+ .bn40 {
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 10px;
+    padding: 4px 6px;
+    color: #15283c !important;
+    cursor: pointer;
+  }
+  
+  .bn40::after {
+    max-width: 100%;
+    height: 2px;
+    display: block;
+    content: "";
+    background: linear-gradient(-90deg, #1ed085 0%, #15283c 50%, #15283c 100%);
+    opacity: 1;
+    margin-bottom: -6px;
+    margin-top: 1px;
   }
