@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { Link,useNavigate,Navigate } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import LettersList from "./LettersList";
 import AddExample from "./AddExamples";
-
+import NavBar from "./NavBar";
 function PhoneticsList() {
+  const navigate = useNavigate();
+  const user = localStorage.getItem('username');
+
+  const fetchData = async () => {
+    if (user){
+      navigate('/phoneticsexamples');
+    
+    }else{
+      navigate('/');
+    }
+   
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const { REACT_APP_HOST } = process.env;
   return (
+    <>
+    <NavBar/>
     <div className="midde_cont">
       <div className="container-fluid">
       <div className="row column_title page_title">
@@ -18,6 +35,7 @@ function PhoneticsList() {
           <LettersList/>
       </div>
     </div>
+    </>
   );
 }
 export default PhoneticsList;

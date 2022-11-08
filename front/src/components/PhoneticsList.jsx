@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate,Navigate } from "react-router-dom";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Toast from 'react-bootstrap/Toast';
+import NavBar from "./NavBar";
 function PhoneticsList() {
   const { REACT_APP_HOST } = process.env;
+  const navigate = useNavigate();
     // #Open and close model
     const handleClose = () => setshow(false);
     const handleShow = () => setshow(true);
@@ -14,21 +16,28 @@ function PhoneticsList() {
     const [flashmsgshow, setflashmsgshow] = useState(false);
     const [letterError, setletterError] = useState(false);
     const [Phonetics, SetPhonetics] = useState([]);
+    const user = localStorage.getItem('username');
+
     const fetchData = async () => {
-      try {
-        const { data: response } = await axios.get(
-          `${REACT_APP_HOST}getPhoneticsList.php`
-        );
-        SetPhonetics(response);
-        console.log(response);
-      } catch (error) {
-        console.error(error.message);
+      if (user){
+        try {
+          const { data: response } = await axios.get(
+            `${REACT_APP_HOST}getPhoneticsList.php`
+          );
+          SetPhonetics(response);
+          console.log(response);
+        } catch (error) {
+          console.error(error.message);
+        }
+      }else{
+        navigate('/');
       }
+     
     };
-  
     useEffect(() => {
       fetchData();
     }, []);
+    
 const handleDeleteLetter =(id)=>{
   console.log('letterId',id)
   const uploadData = new FormData();
@@ -129,6 +138,8 @@ const alertletterError = () =>  {
       .catch((error) => console.log(error));
   }};
   return (
+    <>
+    <NavBar/>
     <div className="midde_cont">
       <div className="container-fluid">
         <div className="row column_title page_title">
@@ -200,6 +211,7 @@ const alertletterError = () =>  {
         </div>
       </div>
     </div>
+    </>
   );
 }
 export default PhoneticsList;

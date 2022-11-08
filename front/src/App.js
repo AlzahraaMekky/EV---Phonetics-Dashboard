@@ -24,7 +24,6 @@ function App() {
         <div> 
        <SideBar/>
         <div id="content">
-          <NavBar/>
           <Routes>
             <Route path="/" element={<Login />} /> 
             <Route path="/PhoneticsList" element={<PhoneticsList />} /> 

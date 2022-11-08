@@ -3,6 +3,7 @@ import Toast from 'react-bootstrap/Toast';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { ReactSession } from 'react-client-session';
+import NavBar from "./NavBar";
 ReactSession.setStoreType("localStorage");
 function Login() {
     const { REACT_APP_HOST } = process.env;
@@ -43,10 +44,9 @@ const handleSubmit=(e)=>{
         .then((res) => {
         console.log('res.data',res.data);
         if(res.data == 1){
-          console.log('user')
+          // console.log('user')
           localStorage.setItem("username",userName);
           navigate('/PhoneticsList');
-
 
         }
         
@@ -74,6 +74,8 @@ const UserError = () =>  {
     );
   }
     return(
+    <>
+    <NavBar/>
     <div className="midde_cont">
         <div className="container-fluid">
             <div className="row column_title page_title">
@@ -122,11 +124,7 @@ const UserError = () =>  {
          </div>
 
     </div>
-     
-      
-      
-     
-    
+    </>
         
     )
     

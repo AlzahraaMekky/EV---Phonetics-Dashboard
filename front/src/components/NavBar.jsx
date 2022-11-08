@@ -1,9 +1,20 @@
-import React from "react";
 import { ReactSession }  from 'react-client-session';
 import { Link } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 function NavBar() {
-  const user = localStorage.getItem("username");
+  const [checkUser, SetcheckUser] = useState(false);
+  let user = localStorage.getItem("username");
+  console.log('localStorage',user)
+  useEffect(() => {
+    const checkData = () => {
+      if (user!= null) {
+        console.log('user',user)
+        SetcheckUser(true);
+      }
+    };
+    checkData();
+  }, []);
 
   return (
     <div className="topbar">
@@ -24,7 +35,7 @@ function NavBar() {
           <div className="right_topbar">
             <div className="icon_info">
               <ul className="user_profile_dd">
-              {user? 
+              {checkUser? 
                     (
                       <li>
                       <a className="dropdown-toggle" data-toggle="dropdown" >
@@ -43,7 +54,7 @@ function NavBar() {
                       </div>
                     </li>
                     ) :
-                    <li>
+                    <li className='lilogin'>
                     <Link to ={'/'}>
                       <img
                         className="img-responsive rounded-circle"
@@ -53,9 +64,7 @@ function NavBar() {
                        <span className="name_user">Login</span>
                     </Link>
                   </li>
-                     
                      }
-              
               </ul>
             </div>
           </div>

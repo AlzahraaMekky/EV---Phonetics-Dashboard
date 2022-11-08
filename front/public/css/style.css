@@ -709,7 +709,9 @@ a:focus {
     font-size: 18px; 
     
 }
-
+.lilogin a::after {
+    content: "" !important;
+}
 .icon_info ul.user_profile_dd {
     float: left;
     margin: 0 0 0 25px;
@@ -3459,7 +3461,7 @@ table.projects tr td:first-child {
   
   @media (min-width: 768px) {
     .button-50 {
-      padding: 12px 50px;
+      padding: 7px 40px;
     }
   }
  

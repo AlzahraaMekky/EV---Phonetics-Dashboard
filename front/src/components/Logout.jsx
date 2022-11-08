@@ -1,11 +1,11 @@
-import { ReactSession }  from 'react-client-session';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate,Navigate } from 'react-router-dom';
+import Login from './Login';
+import NavBar from "./NavBar";
+import React, { useState, useEffect } from "react";
 function Logout() {
     const navigate = useNavigate();
-    localStorage.removeItem("username");
+    let user = localStorage.removeItem("username");
     navigate('/');
-
+    if (user == null) return < Navigate to="/" />;
 }
-
 export default Logout;
