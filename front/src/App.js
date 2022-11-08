@@ -11,6 +11,7 @@ import QuiztwoPhonetics from './components/QuiztwoPhonetics';
 import QuizthreePhonetics from './components/QuizthreePhonetics';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import Users from './components/Users';
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -36,6 +37,7 @@ function App() {
             <Route path="/quiz-two" element={<Quiz_2 />} /> 
             <Route path="/quiz-Three" element={<Quiz_3 />} /> 
             <Route path="/logout" element={<Logout />} /> 
+            <Route path="/users" element={<Users />} /> 
           </Routes>
         </div> 
         </div> 

@@ -70,13 +70,13 @@ function SideBar() {
               </ul>
             </li>
             <li>
-              <a href="widgets.html">
+            <Link to={'/users'}>
                 <img
                   style={{ marginTop: "-20px", marginRight: "5px" }}
                   src="http://localhost:3000/images/icons/001-programmer.png"
                 />
                 <span>Users</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
