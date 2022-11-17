@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link,useNavigate,Navigate,useParams } from "react-router-dom";
 import Toast from 'react-bootstrap/Toast';
 import Swal from "sweetalert2";
-function PhoneticsSamples() {
-  const {REACT_APP_HOST} = process.env;
+import NavBar from "./NavBar";
+function QuiztwoPhonetics() {
+  const {REACT_APP_HOST,REACT_APP_IMAGE_PATH} = process.env;
   const { phonetic_name } = useParams();
   const [word, setword] = useState("");
-  const [voice, setvoice] = useState();
+  const [image, setimage] = useState();
   const [Type, setType] = useState("i");
   const [FileError, setFileError] = useState(false);
   const [wordExitError, setwordExitError] = useState(false);
   const [isActive, setIsActive] = useState(0);
   const [wordError, setwordError] = useState(false);
-  const [voiceError, setvoiceError] = useState(false);
+  const [imageError, setimageError] = useState(false);
   const [show, setshow] = useState(false);
+  const user = localStorage.getItem('username');
   const [PhoneticsQuiztwo, SetPhoneticsQuiztwo] = useState([]);
+  const navigate = useNavigate();
   const fetchData = async (type='i') => {
     console.log('phonetic_name',phonetic_name,'type',type)
+    if (user){
     try {
       const { data: response } = await axios.get(
         `${REACT_APP_HOST}getQuiz2.php?name=${phonetic_name}&type=${type}`
@@ -27,6 +31,9 @@ function PhoneticsSamples() {
     } catch (error) {
       console.error(error.message);
     }
+  }else{
+    navigate('/login');
+  }
   };
 
   useEffect(() => {
@@ -116,13 +123,13 @@ const handleDeleteQuiz2=(id)=>{
       } else {
           setwordError(false)
       }
-      if (!voice) {
-          setvoiceError(true)
+      if (!image) {
+          setimageError(true)
       } else {
-          setvoiceError(false)
+          setimageError(false)
       }
   
-      if (word==""||!voice) {
+      if (word==""||!image) {
           return false;
       } else {
           return true;
@@ -136,7 +143,7 @@ const handleDeleteQuiz2=(id)=>{
     uploadData.append("phonetic_name", phonetic_name)
     uploadData.append("word", word)
     uploadData.append("type", Type)
-    uploadData.append("voice", voice, voice.name);
+    uploadData.append("image", image, image.name);
     axios
         .post( `${REACT_APP_HOST}addQuiz2_2.php`, uploadData)
         .then((res) => {
@@ -170,39 +177,54 @@ const handleDeleteQuiz2=(id)=>{
       if (PhoneticsQuiztwo.length >0){
          return(
           PhoneticsQuiztwo.map((quiz, i) => 
-          <div className="col-md-6">
-          <div className="row">
-            <div className="col">
-            <div className="boxlayout">
-              <div>
-                  <img
-                  className="img-responsive"
-                  src="http://localhost:3000/images/icons/scrabble.png"
-                  alt="#"
+          <div className="col-md-4">
+          <div className="boxContainer" style={{height:'85px'}}>
+              <div className="boxlayout">
+                    <img
+                    className="img-responsive quiz1-img"
+                    src={REACT_APP_IMAGE_PATH+'phonetics_app'+quiz.image} 
+                    alt="#"
                 />
-               <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {quiz.word}</span>
-  
-              </div>
-          </div>
-            </div>
-            <div className="col">
-            <div  className="boxlayout">
-            <audio key={quiz.id}  controls className="Play">
-              <source src={'http://147.182.181.209/phonetics_app'+quiz.voice}  type="audio/mp3"></source>
-            </audio>
-            </div>
-            </div>
-            <div className="col">
-            <div  className="boxlayout">
-           
-            <button className="letterExample" onClick={()=>handleDeleteQuiz2(quiz.id)}>
+                <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}>{quiz.word}</span>
+                <button className="letterExample" style={{float:'right'}} onClick={()=>handleDeleteQuiz2(quiz.id)}>
                   <img src="http://localhost:3000/images/icons/delete.png"/>
               </button>
+              </div>
           </div>
-            </div>
           </div>
+          // <div className="col-md-6">
+          // <div className="row">
+          //   <div className="col">
+          //   <div className="boxlayout">
+          //     <div>
+          //         <img
+          //         className="img-responsive"
+          //         src="http://localhost:3000/images/icons/scrabble.png"
+          //         alt="#"
+          //       />
+          //      <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {quiz.word}</span>
+  
+          //     </div>
+          // </div>
+          //   </div>
+          //   <div className="col">
+          //   <div  className="boxlayout">
+          //   <audio key={quiz.id}  controls className="Play">
+          //     <source src={'http://147.182.181.209/phonetics_app'+quiz.image}  type="audio/mp3"></source>
+          //   </audio>
+          //   </div>
+          //   </div>
+          //   <div className="col">
+          //   <div  className="boxlayout">
+           
+          //   <button className="letterExample" onClick={()=>handleDeleteQuiz2(quiz.id)}>
+          //         <img src="http://localhost:3000/images/icons/delete.png"/>
+          //     </button>
+          // </div>
+          //   </div>
+          // </div>
     
-          </div>
+          // </div>
       )
       )  
       return(<p> Quiz</p>)
@@ -221,11 +243,11 @@ const handleDeleteQuiz2=(id)=>{
       </div>
     );
   }
-  const alertvoiceError = () =>  {
+  const alertimageError = () =>  {
     return (
       <div className="row d-flex justify-content-center">
-          <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setvoiceError(false)} show={voiceError} delay={3000} autohide>
-            <Toast.Body>Phonetics voice can not be empty!</Toast.Body>
+          <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
+            <Toast.Body>Phonetics image can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -243,12 +265,14 @@ const handleDeleteQuiz2=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setFileError(false)} show={FileError} delay={3000} autohide>
-            <Toast.Body>Phonetics Voice Already Exit!</Toast.Body>
+            <Toast.Body>Phonetics image Already Exit!</Toast.Body>
           </Toast>
       </div>
     );
   }
   return (
+    <>
+    <NavBar/>
     <div className="midde_cont">
       <div className="container-fluid">
       <div className="row column_title page_title">
@@ -306,12 +330,12 @@ const handleDeleteQuiz2=(id)=>{
                   <span className="input-group-text" id="basic-addon1">
                   <i className="fas fa-volume"></i></span>
                 </div>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice(evt.target.files[0])}
+                <input type="file"  className="form-control" onChange={(evt) => setimage(evt.target.files[0])}
                 placeholder="Add Word" aria-label="word" aria-describedby="basic-addon1"/>
               </div>
              
-              {voiceError ? (
-                alertvoiceError()
+              {imageError ? (
+                alertimageError()
               ) : null}
               {FileError ? (
                 alertFileError()
@@ -327,7 +351,7 @@ const handleDeleteQuiz2=(id)=>{
                   }}
                  
                 >
-                  Save Example
+                  Save Quiz2
                 </Button>
               </Modal.Footer>
             </form>
@@ -336,6 +360,7 @@ const handleDeleteQuiz2=(id)=>{
         </div>
       </div>
     </div>
+    </>
   );
 }
-export default PhoneticsSamples;
+export default QuiztwoPhonetics;

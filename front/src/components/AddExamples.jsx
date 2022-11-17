@@ -15,9 +15,8 @@ const [type, settype] = useState("");
 const [typeError, settypeError] = useState(false);
 const [FileError, setFileError] = useState(false);
 const [wordExitError, setwordExitError] = useState(false);
-const [voice, setvoice] = useState();
-console.log('voice',typeof(voice),voice)
-const [voiceError, setvoiceError] = useState(false);
+const [image, setimage] = useState();
+const [imageError, setimageError] = useState(false);
 const types = ['initially', 'medially', 'finally'];
 // #Open and close model
   const handleClose = () => setshow(false);
@@ -51,13 +50,13 @@ const types = ['initially', 'medially', 'finally'];
     } else {
         setwordError(false)
     }
-    if (!voice) {
-        setvoiceError(true)
+    if (!image) {
+        setimageError(true)
     } else {
-        setvoiceError(false)
+        setimageError(false)
     }
 
-    if (letter == "" ||type==""||word==""||!voice) {
+    if (letter == "" ||type==""||word==""||!image) {
         return false;
     } else {
         return true;
@@ -71,9 +70,10 @@ const handleSubmit = (e) => {
     uploadData.append("phonetic_id", letter)
     uploadData.append("word", word)
     uploadData.append("type", type)
-    uploadData.append("voice", voice, voice.name);
+    uploadData.append("image", image, image.name);
+    console.log(image)
     axios
-        .post( `${REACT_APP_HOST}addExample.php`, uploadData)
+        .post( `${REACT_APP_HOST}addExampleUpdate.php`, uploadData)
         .then((res) => {
         console.log(res);
         if (res.data=='file'){
@@ -139,11 +139,11 @@ const handleSubmit = (e) => {
           </div>
         );
       }
-      const alertvoiceError = () =>  {
+      const alertimageError = () =>  {
         return (
           <div className="row d-flex justify-content-center">
-              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setvoiceError(false)} show={voiceError} delay={3000} autohide>
-                <Toast.Body>Phonetics voice can not be empty!</Toast.Body>
+              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
+                <Toast.Body>Phonetics Image can not be empty!</Toast.Body>
               </Toast>
           </div>
         );
@@ -226,14 +226,14 @@ const handleSubmit = (e) => {
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">
-                  <i class="fas fa-volume"></i></span>
+                  <i class="fas fa-images"></i></span>
                 </div>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice(evt.target.files[0])}
+                <input type="file"  className="form-control" onChange={(evt) => setimage(evt.target.files[0])}
                 placeholder="Add Word" aria-label="word" aria-describedby="basic-addon1"/>
               </div>
              
-              {voiceError ? (
-                alertvoiceError()
+              {imageError ? (
+                alertimageError()
               ) : null}
               {FileError ? (
                 alertFileError()

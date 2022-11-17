@@ -11,6 +11,7 @@ function Login() {
     const [password, setpassword] = useState("");
     const [passwordeError, setpasswordeError] = useState(false);
     const [userNameError, setuserNameError] = useState(false);
+    const [Error, setError] = useState(false);
     const navigate = useNavigate();
 
   //  form validation
@@ -46,7 +47,19 @@ const handleSubmit=(e)=>{
         if(res.data == 1){
           // console.log('user')
           localStorage.setItem("username",userName);
+          localStorage.setItem("role",1);
+          navigate('/');
+
+        }
+        if(res.data == 0){
+          // console.log('user')
+          localStorage.setItem("username",userName);
+          localStorage.setItem("role",0);
           navigate('/PhoneticsList');
+
+        }
+        if(res.data == -1){
+          setError(true)
 
         }
         
@@ -67,8 +80,17 @@ const UserError = () =>  {
   const PasswordError = () =>  {
     return (
       <div className="row d-flex justify-content-center">
-          <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setuserNameError(false)} show={userNameError} delay={3000} autohide>
+          <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setpasswordeError(false)} show={passwordeError} delay={3000} autohide>
             <Toast.Body>Password Can’t be Empty</Toast.Body>
+          </Toast>
+      </div>
+    );
+  }
+  const ErrorMSG = () =>  {
+    return (
+      <div className="row d-flex justify-content-center">
+          <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setError(false)} show={Error} delay={3000} autohide>
+            <Toast.Body>Password or User Wrong</Toast.Body>
           </Toast>
       </div>
     );
@@ -112,6 +134,9 @@ const UserError = () =>  {
               ) : null}
                {passwordeError ? (
                 PasswordError()
+              ) : null}
+                {Error ? (
+                ErrorMSG()
               ) : null}
                 </form>
             </div>

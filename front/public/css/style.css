@@ -3539,3 +3539,25 @@ table.projects tr td:first-child {
     margin-bottom: -6px;
     margin-top: 1px;
   }
+.card-profile{
+    position: relative;
+    margin-top: 50px;
+}
+.adminimgcontainer{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top:-40px
+}
+.adminprofile{
+    width: 64px;
+    height: 64px;
+}
+.card-profile{
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+/* #43b05c */

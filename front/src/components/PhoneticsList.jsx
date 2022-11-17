@@ -15,22 +15,38 @@ function PhoneticsList() {
     const [name, setname] = useState("");
     const [flashmsgshow, setflashmsgshow] = useState(false);
     const [letterError, setletterError] = useState(false);
-    const [Phonetics, SetPhonetics] = useState([]);
+    const [affricates, Setaffricates] = useState([]);
+    const [diphthongs, Setdiphthongs] = useState([]);
+    const [fricatives, Setfricatives] = useState([]);
+    const [glidings, Setglidings] = useState([]);
+    const [leteral, Setleteral] = useState([]);
+    const [long, Setlong] = useState([]);
+    const [nasals, Setnasals] = useState([]);
+    const [short, Setshort] = useState([]);
+    const [stops, Setstops] = useState([]);
+    const [phType, setphType] = useState("");
     const user = localStorage.getItem('username');
-
     const fetchData = async () => {
       if (user){
         try {
           const { data: response } = await axios.get(
             `${REACT_APP_HOST}getPhoneticsList.php`
           );
-          SetPhonetics(response);
+          Setaffricates(response.affricates);
+          Setdiphthongs(response.diphthongs);
+          Setfricatives(response.fricatives);
+          Setglidings(response.glidings);
+          Setleteral(response.leteral);
+          Setlong(response.long);
+          Setnasals(response.nasals);
+          Setshort(response.short);
+          Setstops(response.stops);
           console.log(response);
         } catch (error) {
           console.error(error.message);
         }
       }else{
-        navigate('/');
+        navigate('/login');
       }
      
     };
@@ -53,8 +69,159 @@ const handleDeleteLetter =(id)=>{
   .catch((error) => console.log(error));
 }
 
- 
-    const PhoneticsList = Phonetics.map((phonetic, i) => {
+const shortList = short.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const nasalsList = nasals.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const longList = long.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const leteralList = leteral.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const glidingsList = glidings.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const diphthongsList = diphthongs.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const fricativesList = fricatives.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+const stopsList = stops.map((phonetic, i) => {
+  return (
+    <>
+      <div className="col-md-2">
+        <Link key={phonetic.id} 
+          to={`/phoneticssexample/${phonetic.name}`}
+          className="button-50 button"
+          role="button"
+        >
+          {phonetic.name}
+        </Link>
+        <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
+            <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+      </div>
+      <div className="custom-margin"></div>
+    </>
+  );
+});
+    const affricatesList = affricates.map((phonetic, i) => {
       return (
         <>
           <div className="col-md-2">
@@ -116,6 +283,7 @@ const alertletterError = () =>  {
     if (isValid) {
     const uploadData = new FormData();
     uploadData.append("name", name)
+    uploadData.append("type", phType)
     axios
       .post( `${REACT_APP_HOST}addNewPhonetic.php`, uploadData)
       .then((res) => {
@@ -163,9 +331,64 @@ const alertletterError = () =>  {
               </Button>
           </div>
         </div>
+        <div className="fricatives">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>Fricatives Phonetics</h5>
         <div className="row column1">
-          {PhoneticsList}
+          {fricativesList}
         </div>
+        </div>
+        <div className="glidings">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>glidings Phonetics</h5>
+        <div className="row column1">
+          {glidingsList}
+        </div>
+        </div>
+        <div className="leteral">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>leteral Phonetics</h5>
+        <div className="row column1">
+          {leteralList}
+        </div>
+        </div>
+        <div className="nasals">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>Nasals Phonetics</h5>
+        <div className="row column1">
+          {nasalsList}
+        </div>
+        </div>
+        <div className="stops">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>stops Phonetics</h5>
+        <div className="row column1">
+          {stopsList}
+        </div>
+        </div>
+        <div className="short">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>Short Phonetics</h5>
+        <div className="row column1">
+          {shortList}
+        </div>
+        </div>
+       
+        <div className="long">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>Long Phonetics</h5>
+        <div className="row column1">
+          {longList}
+        </div>
+        </div>
+        
+        <div className="diphthongs">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>Diphthongs Phonetics</h5>
+        <div className="row column1">
+          {diphthongsList}
+        </div>
+        </div>
+       
+        <div className="affricates">
+        <h5 style={{marginBottom:'15px',color:'#15283c'}}>Affricates Phonetics</h5>
+        <div className="row column1">
+          {affricatesList}
+        </div>
+        </div>
+    
         <div className="row">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
@@ -180,12 +403,35 @@ const alertletterError = () =>  {
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
-                  <span className="input-group-text" id="basic-addon1"><i className="fas fa-sort-alpha-down"></i></span>
+                  <span className="input-group-text" id="basic-addon1">
+                    <i className="fas fa-sort-alpha-down"></i>
+                    </span>
                 </div>
                 <input type="text" className="form-control" onChange={(evt) => setname(evt.target.value)}
                 placeholder="Add Phonetics" aria-label="name" aria-describedby="basic-addon1"/>
               </div>
-             
+              <div className="input-group mb-3">
+              <div className="input-group-prepend">
+              <span className="input-group-text" id="basic-addon1">
+              <i className="fas fa-object-ungroup"></i>
+              </span>
+              </div>
+              <select  className="custom-select" id="inputGroupSelect01" 
+              onChange={(evt) => setphType(evt.target.value)} >
+                  <option selected>Phonetics Type</option>
+                  <option value="1">fricatives</option>
+                  <option value="2">glidings</option>
+                  <option value="3">leteral</option>
+                  <option value="4">nasals</option>
+                  <option value="5">stops</option>
+                  <option value="6">short</option>
+                  <option value="7">long</option>
+                  <option value="8">diphthongs</option>
+                  <option value="9">affricates</option>
+              </select>
+      
+              
+            </div>
               {flashmsgshow ? (
                 alertError()
               ) : null}

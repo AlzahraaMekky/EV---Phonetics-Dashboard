@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 function Logout() {
     const navigate = useNavigate();
     let user = localStorage.removeItem("username");
-    navigate('/');
+    navigate('/login');
     if (user == null) return < Navigate to="/" />;
 }
 export default Logout;

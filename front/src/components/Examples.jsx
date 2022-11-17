@@ -13,7 +13,7 @@ function PhoneticsList() {
       navigate('/phoneticsexamples');
     
     }else{
-      navigate('/');
+      navigate('/login');
     }
    
   };

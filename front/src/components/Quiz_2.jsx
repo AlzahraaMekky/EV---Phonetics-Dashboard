@@ -15,7 +15,7 @@ function Quiz_2() {
       navigate('/quiz-two');
     
     }else{
-      navigate('/');
+      navigate('/login');
     }
    
   };

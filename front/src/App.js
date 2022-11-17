@@ -20,14 +20,15 @@ import {
 } from "react-router-dom";
 
 function App() {
+  let user = localStorage.getItem("username");
     return (
       <Router>
         <div> 
        <SideBar/>
         <div id="content">
           <Routes>
-            <Route path="/" element={<Login />} /> 
-            <Route path="/PhoneticsList" element={<PhoneticsList />} /> 
+            <Route path="/login" element={<Login />} /> 
+            <Route path="/" element={<PhoneticsList />} /> 
             <Route path="/phoneticsexamples/" element={<Examples />} /> 
             <Route path="/phoneticssexample/:phonetic_name" element={<ExampleOfPhonetic />} /> 
             <Route path="/quiz-One/:phonetic_name" element={<QuizOnePhonetics/>} /> 

@@ -8,7 +8,7 @@ function LettersSelectOption() {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
-        `${REACT_APP_HOST}getPhoneticsList.php`
+        `${REACT_APP_HOST}getphonetics.php`
       );
       SetPhonetics(response);
       console.log(response);

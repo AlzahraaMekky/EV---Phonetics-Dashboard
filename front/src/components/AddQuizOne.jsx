@@ -16,13 +16,9 @@ const [letterError, setletterError] = useState(false);
 const [FileError, setFileError] = useState(false);
 const [wordExitError, setwordExitError] = useState(false);
 const [imageError, setimageError] = useState(false);
-const [voice1, setvoice1] = useState();
-const [voice2, setvoice2] = useState();
-const [voice3, setvoice3] = useState();
 const [image1, setimage1] = useState();
 const [image2, setimage2] = useState();
 const [image3, setimage3] = useState();
-const [voiceError, setvoiceError] = useState(false);
 
 // #Open and close model
   const handleClose = () => setshow(false);
@@ -49,14 +45,7 @@ const [voiceError, setvoiceError] = useState(false);
       
     }
     console.log('wordError',wordError)
-    if (!voice1||!voice2||!voice3) {
-        setvoiceError(true)
-        
-    } else {
-        setvoiceError(false)
-       
-    }
-    console.log('voiceError',voiceError)
+    
     if (!image1||!image2||!image3) {
         setimageError(true)
        
@@ -65,7 +54,7 @@ const [voiceError, setvoiceError] = useState(false);
        
     }
     console.log('imageError',imageError)
-    if (letter == "" ||word1==""||word2==""||word3==""||voice1==""||voice2==""||voice3==""||image1==""||image2==""||image3=="") {
+    if (letter == "" ||word1==""||word2==""||word3==""||!image1||!image2||!image3) {
         return false;
     } else {
         return true;
@@ -83,13 +72,10 @@ const handleSubmit = (e) => {
     console.log('after submit')
     const uploadData = new FormData();
     uploadData.append("phonetic_id", letter)
-    uploadData.append("voice1", voice1, voice1.name);
-    uploadData.append("voice2", voice2, voice2.name);
-    uploadData.append("voice3", voice3, voice3.name);
     uploadData.append("image1", image1, image1.name);
     uploadData.append("image2", image2, image2.name);
     uploadData.append("image3", image3, image3.name);
-    let items = '[{"order": "1", "word":"' + word1 + '","image":"image1","voice":"voice1"},{"order": "2", "word":"' + word2 + '","image":"image2","voice":"voice2"},{"order": "3", "word":"'+word3+'","image":"image3","voice":"voice3"}]'
+    let items = '[{"order": "1", "word":"' + word1 + '","image":"image1"},{"order": "2", "word":"' + word2 + '","image":"image2"},{"order": "3", "word":"'+word3+'","image":"image3"}]'
     console.log('items',items)
     uploadData.append("items", items)
     axios
@@ -99,12 +85,16 @@ const handleSubmit = (e) => {
         let respo =res.data;
         console.log('respo',respo,typeof(respo))
         let word = 'file';
-        if (typeof respo === "string") {
-            if (respo.includes(word)){
-                setFileError(true);
-              }
-        }
-        if (respo == 'word'){
+        // if (typeof respo === "string") {
+        //     if (respo.includes(word)){
+        //         setFileError(true);
+        //       }
+        // }
+        // if (respo < 0 ){
+        //   setFileError(true);
+          
+        // }
+        if (respo == 0){
           setwordExitError(true);
           
         }
@@ -130,7 +120,7 @@ const handleSubmit = (e) => {
         return (
           <div className="row d-flex justify-content-center">
               <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
-                <Toast.Body>Phonetics Image Already Exit!</Toast.Body>
+                <Toast.Body>Phonetics Image can not be empty!</Toast.Body>
               </Toast>
           </div>
         );
@@ -163,15 +153,7 @@ const handleSubmit = (e) => {
           </div>
         );
       }
-      const alertvoiceError = () =>  {
-        return (
-          <div className="row d-flex justify-content-center">
-              <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setvoiceError(false)} show={voiceError} delay={3000} autohide>
-                <Toast.Body>Phonetics voice can not be empty!</Toast.Body>
-              </Toast>
-          </div>
-        );
-      }
+   
     return (
         <>
         <div className="col-6 d-flex justify-content-end">
@@ -235,25 +217,7 @@ const handleSubmit = (e) => {
                {wordExitError ? (
                 alertExitwordError()
               ) : null}
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text" id="basic-addon1">
-                  <i  className="fas fa-volume"></i></span>
-                </div>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice1(evt.target.files[0])}
-                 aria-label="voice" aria-describedby="basic-addon1"/>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice2(evt.target.files[0])}
-                 aria-label="voice" aria-describedby="basic-addon1"/>
-                <input type="file"  className="form-control" onChange={(evt) => setvoice3(evt.target.files[0])}
-                 aria-label="voice3"aria-describedby="basic-addon1"/>
-              </div>
-             
-              {voiceError ? (
-                alertvoiceError()
-              ) : null}
-              {FileError ? (
-                alertFileError()
-              ) : null}
+      
             <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">
@@ -279,7 +243,7 @@ const handleSubmit = (e) => {
                   }}
                  
                 >
-                  Save Quiz Two
+                  Save Quiz One
                 </Button>
               </Modal.Footer>
             </form>

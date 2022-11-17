@@ -42,7 +42,7 @@ function NavBar() {
 
                         <img
                           className="img-responsive rounded-circle"
-                          src="images/layout/user-profile.png"
+                          src="http://localhost:3000/images/layout/user-profile.png"
                           alt="#"
                         />
                          <span className="name_user">{user}</span>
@@ -55,10 +55,10 @@ function NavBar() {
                     </li>
                     ) :
                     <li className='lilogin'>
-                    <Link to ={'/'}>
+                    <Link to ={'/login'}>
                       <img
                         className="img-responsive rounded-circle"
-                        src="images/layout/loginIcon.png"
+                        src="http://localhost:3000/images/layout/loginIcon.png"
                         alt="#"
                       />
                        <span className="name_user">Login</span>

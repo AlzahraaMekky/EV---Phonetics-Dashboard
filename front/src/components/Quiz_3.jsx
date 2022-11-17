@@ -15,7 +15,7 @@ function Quiz_3() {
       navigate('/quiz-Three');
     
     }else{
-      navigate('/');
+      navigate('/login');
     }
    
   };
