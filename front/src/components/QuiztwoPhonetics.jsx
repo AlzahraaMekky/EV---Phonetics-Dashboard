@@ -9,7 +9,12 @@ function QuiztwoPhonetics() {
   const {REACT_APP_HOST,REACT_APP_IMAGE_PATH} = process.env;
   const { phonetic_name } = useParams();
   const [word, setword] = useState("");
+  const [CurrentQuiz,setCurrentQuiz] = useState("");
+  const [CurrentImage, setCurrentImage] = useState("");
+  const [QEditimage, setQEditimage] = useState("");
+  const [QEditword, setQEditword] = useState("");
   const [image, setimage] = useState();
+  const [Qid, setQid] = useState("");
   const [Type, setType] = useState("i");
   const [FileError, setFileError] = useState(false);
   const [wordExitError, setwordExitError] = useState(false);
@@ -17,6 +22,7 @@ function QuiztwoPhonetics() {
   const [wordError, setwordError] = useState(false);
   const [imageError, setimageError] = useState(false);
   const [show, setshow] = useState(false);
+  const [EditQuizshow, setEditQuizshow] = useState(false);
   const user = localStorage.getItem('username');
   const [PhoneticsQuiztwo, SetPhoneticsQuiztwo] = useState([]);
   const navigate = useNavigate();
@@ -42,10 +48,35 @@ function QuiztwoPhonetics() {
   const successMsgAlert = () => {
     Swal.fire('Phonetics Quiz added')
   };
-
-// #Open and close model
-const handleClose = () => setshow(false);
+  
+  const successQuizEditMsgAlert = () => {
+    Swal.fire('Phonetics Quiz Edit')
+  };
+// #Open and close Add Quiz2 model
+const handleClose = () => {
+  setshow(false);
+  setwordError(false)
+  setimageError(false)
+  setword("")
+  setimage("")
+}
 const handleShow = () => setshow(true);
+// #Open and close Edit Quiz2 model
+const handleEditQuiz2Close = () => {
+  setEditQuizshow(false)
+  setwordError(false)
+  setimageError(false)
+  setQEditimage("")
+  setQEditword("")
+};
+const handleEditQuizShow = () =>   setEditQuizshow(true);
+
+const getQuiz2Details = (quiz,image,id) =>{
+  setCurrentQuiz(quiz)
+  setCurrentImage(image)
+  setQid(id)
+  
+} 
 const handleDeleteQuiz2=(id)=>{
   console.log('QuizID',id)
   console.log('letterId',id)
@@ -116,6 +147,7 @@ const handleDeleteQuiz2=(id)=>{
         </>
     )
   });
+
     //  form validation
     const validate = () => {
       if (word == "") {
@@ -130,6 +162,25 @@ const handleDeleteQuiz2=(id)=>{
       }
   
       if (word==""||!image) {
+          return false;
+      } else {
+          return true;
+      }
+      };
+     //  form validation
+     const Editvalidate = () => {
+      if (QEditword == "") {
+          setwordError(true)
+      } else {
+          setwordError(false)
+      }
+      if (!QEditimage) {
+          setimageError(true)
+      } else {
+          setimageError(false)
+      }
+  
+      if (QEditword==""||!QEditimage) {
           return false;
       } else {
           return true;
@@ -168,6 +219,32 @@ const handleDeleteQuiz2=(id)=>{
     })
         .catch((error) => console.log(error));
     }};
+  const handleEditQuizSubmit =(e)=>{
+      e.preventDefault();
+    const isValid = Editvalidate();
+    if (isValid) {
+    const uploadData = new FormData();
+    uploadData.append("phonetic_name", phonetic_name)
+    uploadData.append("word", QEditword)
+    uploadData.append("image", QEditimage, QEditimage.name);
+    uploadData.append("id", Qid);
+    axios
+        .post( `${REACT_APP_HOST}EditQuiz2.php`, uploadData)
+        .then((res) => {
+        if (res.data == -1){
+          setwordExitError(true);
+          
+        }
+        if (res.data>0){
+          handleEditQuiz2Close()
+          successQuizEditMsgAlert();
+          fetchData();
+          
+        }      
+    })
+        .catch((error) => console.log(error));
+    }};
+    
     console.log('PhoneticsQuiztwo',PhoneticsQuiztwo);
 
     const PhoneticsQuiz2List =()=>{
@@ -188,7 +265,16 @@ const handleDeleteQuiz2=(id)=>{
                 <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}>{quiz.word}</span>
                 <button className="letterExample" style={{float:'right'}} onClick={()=>handleDeleteQuiz2(quiz.id)}>
                   <img src="http://localhost:3000/images/icons/delete.png"/>
-              </button>
+                </button>
+                <button className="letterExample" style={{float:'right'}} 
+                  onClick={() => {
+                    handleEditQuizShow();
+                    getQuiz2Details(quiz.word,quiz.image,quiz.id);
+              
+                  }}
+                >
+                  <img src="http://localhost:3000/images/icons/edit-image.png"/>
+                </button>
               </div>
           </div>
           </div>
@@ -238,7 +324,7 @@ const handleDeleteQuiz2=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordError(false)} show={wordError} delay={3000} autohide>
-            <Toast.Body>Phonetics word can not be empty!</Toast.Body>
+            <Toast.Body>Quiz word can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -247,7 +333,7 @@ const handleDeleteQuiz2=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
-            <Toast.Body>Phonetics image can not be empty!</Toast.Body>
+            <Toast.Body>Quiz image can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -256,7 +342,7 @@ const handleDeleteQuiz2=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordExitError(false)} show={wordExitError} delay={3000} autohide>
-            <Toast.Body>Phonetics word Already Exit!</Toast.Body>
+            <Toast.Body>Quiz word Already Exit!</Toast.Body>
           </Toast>
       </div>
     );
@@ -265,7 +351,7 @@ const handleDeleteQuiz2=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setFileError(false)} show={FileError} delay={3000} autohide>
-            <Toast.Body>Phonetics image Already Exit!</Toast.Body>
+            <Toast.Body>Quiz image Already Exit!</Toast.Body>
           </Toast>
       </div>
     );
@@ -298,12 +384,12 @@ const handleDeleteQuiz2=(id)=>{
           {typeList}
         </div>
         <div className="row column1">{PhoneticsQuiz2List()}</div>
-     {/* <!--modal --> */}
+     {/* <!-- Add Quiz 2 modal --> */}
      <div className="row">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>
-              <h6>Add Quiz 2 </h6>
+              <h6>Add Quiz 2</h6>
             </Modal.Title>
             <button onClick={handleClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -328,7 +414,7 @@ const handleDeleteQuiz2=(id)=>{
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">
-                  <i className="fas fa-volume"></i></span>
+                  <i class="fas fa-images"></i></span>
                 </div>
                 <input type="file"  className="form-control" onChange={(evt) => setimage(evt.target.files[0])}
                 placeholder="Add Word" aria-label="word" aria-describedby="basic-addon1"/>
@@ -357,7 +443,68 @@ const handleDeleteQuiz2=(id)=>{
             </form>
           </Modal.Body>
         </Modal>
-        </div>
+      </div>
+       {/* <!-- Edit Quiz 2 modal --> */}
+     <div className="row">
+        <Modal show={EditQuizshow} onHide={handleEditQuiz2Close}>
+          <Modal.Header>
+            <Modal.Title>
+              <h6>Edit Quiz 2</h6>
+            </Modal.Title>
+            <button onClick={handleEditQuiz2Close}type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </Modal.Header>
+          <Modal.Body>
+            <form onSubmit={handleEditQuizSubmit}  encType="multipart/form-data">
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                  <i className="fab fa-wordpress-simple"></i></span>
+                </div>
+                <input type="text" className="form-control" onChange={(evt) => setQEditword(evt.target.value)}
+                placeholder={CurrentQuiz} aria-label="word" aria-describedby="basic-addon1"/>
+              </div>
+              {wordError ? (
+                alertwordError()
+              ) : null}
+               {wordExitError ? (
+                alertExitwordError()
+              ) : null}
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                  <img style={{width:'30px',height:'30px',objectFit:'cover'}}src={REACT_APP_IMAGE_PATH+'phonetics_app'+CurrentImage} />
+                 </span>
+                </div>
+                <input type="file"  className="form-control" onChange={(evt) => setQEditimage(evt.target.files[0])}
+                placeholder="Add Word" aria-label="word" aria-describedby="basic-addon1"/>
+              </div>
+             
+              {imageError ? (
+                alertimageError()
+              ) : null}
+              {FileError ? (
+                alertFileError()
+              ) : null}
+           
+              <Modal.Footer>
+                <Button
+                  type="submit"
+                  style={{
+                    color: "#fff",
+                    background: "#1ed085",
+                    border: '1px solid #15283c'
+                  }}
+                 
+                >
+                  Edit Quiz2
+                </Button>
+              </Modal.Footer>
+            </form>
+          </Modal.Body>
+        </Modal>
+      </div>
       </div>
     </div>
     </>

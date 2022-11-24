@@ -11,9 +11,14 @@ function PhoneticsSamples() {
   const {phonetic_name} = useParams();
   const [word, setword] = useState("");
   const [image, setimage] = useState();
+  const [EditExampleimage,setEditExampleimage] = useState();
   const [Type, setType] = useState("i");
+  const [CurrentExample, setCurrentExample] = useState("");
+  const [EditExampleword, setEditExampleword] = useState("");
+  const [CurrentImage, setCurrentImage] = useState("");
   const [FileError, setFileError] = useState(false);
   const [wordExitError, setwordExitError] = useState(false);
+  const [Eid, setEid] = useState("");
   const [isActive, setIsActive] = useState(0);
   const [wordError, setwordError] = useState(false);
   const [imageError, setimageError] = useState(false);
@@ -22,6 +27,7 @@ function PhoneticsSamples() {
   const navigate = useNavigate();
   console.log('phonetic_name',phonetic_name)
   const [PhoneticsExamples, SetPhoneticsExamples] = useState([]);
+  const [showEditModal, setshowEditModal] = useState(false);
   const fetchData = async (type='i') => {
     console.log('phonetic_name',phonetic_name,'type',type)
     if (user){
@@ -45,8 +51,29 @@ function PhoneticsSamples() {
   const successMsgAlert = () => {
     Swal.fire('Phonetics Example added')
   };
-// #Open and close model
-const handleClose = () => setshow(false);
+  const successEditExMsgAlert = () => {
+    Swal.fire('Phonetics Example Updated')
+  };
+  
+//open and close Edit Example model
+const handleEditModalShow = () =>  setshowEditModal(true);
+const handleEditModalClose = () => {
+  setshowEditModal(false);
+  setimageError(false)
+  setwordError(false)
+  setwordExitError(false)
+  setEditExampleword("")
+  setEditExampleimage()
+}
+// #Open and close Add Example model
+const handleClose = () => {
+  setshow(false);
+  setimageError(false)
+  setwordError(false)
+  setwordExitError(false)
+  setword("")
+  setimage()
+}
 const handleShow = () => setshow(true);
 const handleDeleteExample=(id)=>{
   console.log('ExampleID',id)
@@ -63,7 +90,12 @@ const handleDeleteExample=(id)=>{
 })
   .catch((error) => console.log(error));
 }
-
+const getExamplesDetails = (example,image,id) =>{
+ setCurrentExample(example)
+ setCurrentImage(image)
+ setEid(id)
+ 
+} 
   const handleActiveClass = (i) => {
     setIsActive(i);
     console.log('IsActive',isActive)
@@ -118,7 +150,26 @@ const handleDeleteExample=(id)=>{
         </>
     )
   });
-    //  form validation
+    //  form Edit validation
+    const Editvalidate = () => {
+      if (EditExampleword == "") {
+          setwordError(true)
+      } else {
+          setwordError(false)
+      }
+      if (!EditExampleimage) {
+          setimageError(true)
+      } else {
+          setimageError(false)
+      }
+  
+      if (EditExampleword==""||!EditExampleimage) {
+          return false;
+      } else {
+          return true;
+      }
+      };
+        //  form validation
     const validate = () => {
       if (word == "") {
           setwordError(true)
@@ -168,6 +219,34 @@ const handleDeleteExample=(id)=>{
     })
         .catch((error) => console.log(error));
     }};
+    const handleEditExampleSubmit = (e) => {
+      // let Type = handletype();
+      // console.log('type from handle submit',Type)
+      e.preventDefault();
+      const isValid = Editvalidate();
+      if (isValid) {
+      const uploadData = new FormData();
+      uploadData.append("id",Eid)
+      console.log(Eid,Eid)
+      uploadData.append("phonetic_name", phonetic_name)
+      uploadData.append("word", EditExampleword)
+      uploadData.append("image",EditExampleimage,EditExampleimage.name);
+      axios
+          .post( `${REACT_APP_HOST}EditExample.php`, uploadData)
+          .then((res) => {
+          console.log(res);
+          if (res.data == -1){
+            setwordExitError(true);
+            
+          }
+          if (res.data>0){
+            handleEditModalClose()
+            successEditExMsgAlert();
+            fetchData();
+          }      
+      })
+          .catch((error) => console.log(error));
+      }};
   const PhoneticsExamplesList =()=>{
     let phoneticssExampleLength = PhoneticsExamples.length
     console.log('phoneticssExampleLength',phoneticssExampleLength)
@@ -185,7 +264,16 @@ const handleDeleteExample=(id)=>{
               <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}>{example.word}</span>
               <button className="letterExample" style={{float:'right'}} onClick={()=>handleDeleteExample(example.id)}>
                 <img src="http://localhost:3000/images/icons/delete.png"/>
-            </button>
+             </button>
+              <button className="letterExample" style={{float:'right'}} 
+                onClick={() => {
+                  handleEditModalShow();
+                  getExamplesDetails(example.word,example.image,example.id);
+            
+                }}
+            >
+                <img src="http://localhost:3000/images/icons/edit-image.png"/>
+             </button>
             </div>
         </div>
         </div>
@@ -256,7 +344,7 @@ const handleDeleteExample=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordError(false)} show={wordError} delay={3000} autohide>
-            <Toast.Body>Phonetics word can not be empty!</Toast.Body>
+            <Toast.Body>Example word can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -265,7 +353,7 @@ const handleDeleteExample=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
-            <Toast.Body>Phonetics image can not be empty!</Toast.Body>
+            <Toast.Body>Example image can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -274,7 +362,7 @@ const handleDeleteExample=(id)=>{
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordExitError(false)} show={wordExitError} delay={3000} autohide>
-            <Toast.Body>Phonetics word Already Exit!</Toast.Body>
+            <Toast.Body>Example word Already Exit!</Toast.Body>
           </Toast>
       </div>
     );
@@ -316,7 +404,7 @@ const handleDeleteExample=(id)=>{
           {typeList}
         </div>
         <div className="row column1">{PhoneticsExamplesList()}</div>
-     {/* <!--modal --> */}
+     {/* <!-- Add Example modal --> */}
      <div className="row">
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
@@ -375,7 +463,69 @@ const handleDeleteExample=(id)=>{
             </form>
           </Modal.Body>
         </Modal>
-        </div>
+      </div>
+      {/* <!-- Edit Example modal --> */}
+     <div className="row">
+        <Modal show={showEditModal} onHide={handleEditModalClose}>
+          <Modal.Header>
+            <Modal.Title>
+              <h6>Edit Example </h6>
+            </Modal.Title>
+            <button onClick={handleEditModalClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </Modal.Header>
+          <Modal.Body>
+            <form onSubmit={handleEditExampleSubmit}  encType="multipart/form-data">
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                  <i className="fab fa-wordpress-simple"></i></span>
+                </div>
+                <input type="text" className="form-control" onChange={(evt) => setEditExampleword(evt.target.value)}
+                placeholder={CurrentExample} aria-label="word" aria-describedby="basic-addon1"/>
+              </div>
+              {wordError ? (
+                alertwordError()
+              ) : null}
+               {wordExitError ? (
+                alertExitwordError()
+              ) : null}
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                  {/* <i class="fas fa-images"></i></span> */}
+                  <img style={{width:'30px',height:'30px',objectFit:'cover'}}src={REACT_APP_IMAGE_PATH+'phonetics_app'+CurrentImage} />
+                  </span>
+                </div>
+                <input type="file"  className="form-control" onChange={(evt) => setEditExampleimage(evt.target.files[0])}
+                placeholder="Add Word" aria-label="word" aria-describedby="basic-addon1"/>
+              </div>
+             
+              {imageError ? (
+                alertimageError()
+              ) : null}
+              {FileError ? (
+                alertFileError()
+              ) : null}
+           
+              <Modal.Footer>
+                <Button
+                  type="submit"
+                  style={{
+                    color: "#fff",
+                    background: "#1ed085",
+                    border: '1px solid #15283c'
+                  }}
+                 
+                >
+                  Edit Example
+                </Button>
+              </Modal.Footer>
+            </form>
+          </Modal.Body>
+        </Modal>
+      </div>
       </div>
     </div>
     </>

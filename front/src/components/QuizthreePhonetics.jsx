@@ -13,10 +13,18 @@ function QuizthreePhonetics() {
   const [FileError, setFileError] = useState(false);
   const [wordExitError, setwordExitError] = useState(false);
   const [imageError, setimageError] = useState(false);
+  const [CurrentWord, setCurrentWord] = useState("");
+  const [CurrentImage, setCurrentImage] = useState("");
+  const [Editword, setEditword] = useState("");
+  const [Editimage, setEditimage] = useState("");
+  const [Wid, setWid] = useState("")
+  const [Qid, setQid] = useState("");
+  const [wCount, setwCount] = useState("");
   const [wordError, setwordError] = useState(false);
   const [word1, setword1] = useState("");
   const [word2, setword2] = useState("");
   const [word3, setword3] = useState("");
+  const [EditQuizshow, setEditQuizshow] = useState(false);
   // const [voice1, setvoice1] = useState();
   // const [voice2, setvoice2] = useState();
   // const [voice3, setvoice3] = useState();
@@ -42,8 +50,39 @@ function QuizthreePhonetics() {
     navigate('/login');
   }
   };
+  const successQEditMsgAlert = () => {
+    Swal.fire('Phonetics Quiz 3 Updated')
+  };
 // #Open and close model
-const handleClose = () => setshow(false);
+const handleClose = () => {
+  setshow(false);
+  setwordError(false)
+  setimageError(false);
+  setimage1("")
+  setimage2("")
+  setimage3("")
+  setword1("")
+  setword2("")
+  setword3("")
+}
+const handleEditQuizShow = () => {
+  setEditQuizshow(true);
+  setwordError(false)
+  setimageError(false)
+  setEditimage("")
+  setEditword("")
+}
+const handleEditQuizClose = () => {
+  setEditQuizshow(false);
+}
+const getQuiz3Details  = (word,image,qid,j,wid) =>{
+  setCurrentWord(word)
+  setCurrentImage(image)
+  setQid(qid)
+  setwCount(j)
+  setWid(wid)
+  console.log('getQuiz3Details',word,image,qid,j,wid)
+}
 const handleShow = () => setshow(true);
 const successMsgAlert = () => {
   Swal.fire('Phonetics Quiz 3 added')
@@ -56,7 +95,7 @@ const successMsgAlert = () => {
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordError(false)} show={wordError} delay={3000} autohide>
-            <Toast.Body>Phonetics word can not be empty!</Toast.Body>
+            <Toast.Body>Quiz word can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -65,7 +104,7 @@ const successMsgAlert = () => {
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setwordExitError(false)} show={wordExitError} delay={3000} autohide>
-            <Toast.Body>Phonetics word Already Exit!</Toast.Body>
+            <Toast.Body>Quiz word Already Exit!</Toast.Body>
           </Toast>
       </div>
     );
@@ -74,7 +113,7 @@ const successMsgAlert = () => {
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setvoiceError(false)} show={voiceError} delay={3000} autohide>
-            <Toast.Body>Phonetics voice can not be empty!</Toast.Body>
+            <Toast.Body>Quiz  voice can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -83,7 +122,7 @@ const successMsgAlert = () => {
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setFileError(false)} show={FileError} delay={3000} autohide>
-            <Toast.Body>Phonetics Voice Already Exit!</Toast.Body>
+            <Toast.Body>Quiz Voice Already Exit!</Toast.Body>
           </Toast>
       </div>
     );
@@ -92,7 +131,7 @@ const successMsgAlert = () => {
     return (
       <div className="row d-flex justify-content-center">
           <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setimageError(false)} show={imageError} delay={3000} autohide>
-            <Toast.Body>Phonetics Image can not be empty!</Toast.Body>
+            <Toast.Body>Quiz Image can not be empty!</Toast.Body>
           </Toast>
       </div>
     );
@@ -130,7 +169,26 @@ const successMsgAlert = () => {
     }
     
     }
-
+    const Editvalidate = () => {
+      if (Editword == "" ) {
+         setwordError(true)    
+     } else {
+         setwordError(false)
+     } 
+     if (!Editimage) {
+         setimageError(true)
+        
+     } else {
+         setimageError(false)
+        
+     }
+     if (Editword==""||!Editimage) {
+         return false;
+     } else {
+         return true;
+     }
+     
+     }
 const handleDeleteQuiz3=(id,word,j)=>{
     console.log('QuizID',id)
     console.log('word',word)
@@ -194,6 +252,38 @@ const handleSubmit = (e) => {
   })
       .catch((error) => console.log(error));
   }};
+  const handleQEditSubmit=(e)=>{
+    e.preventDefault();
+    const isValid = Editvalidate();
+    console.log('before submit')
+    if (isValid) {
+    console.log('after submit')
+    const uploadData = new FormData();
+    uploadData.append("phonetic_name", phonetic_name)
+    uploadData.append("qid", Qid)
+    uploadData.append("word", Editword);
+    uploadData.append("image",Editimage,Editimage.name);
+    uploadData.append("wid",Wid);
+    uploadData.append("wCount",wCount);
+    axios
+        .post( `${REACT_APP_HOST}EditQuiz3.php`, uploadData)
+        .then((res) => {
+        console.log(res);
+        let respo =res.data;
+          console.log('respo',respo,typeof(respo))
+        if (respo == -1){
+          setwordExitError(true);
+        }
+        if (respo>0){
+          handleEditQuizClose();
+          successQEditMsgAlert();
+          fetchData();
+          
+        }
+  
+    })
+        .catch((error) => console.log(error));
+  }};
   const PhoneticsQuizthreeList = PhoneticsQuizThree.map((quiz, i) => {
     return ( 
             <>
@@ -207,6 +297,13 @@ const handleSubmit = (e) => {
                             alt="#"
                         />
                         <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {q.correct_word}</span>
+                        <button className="letterExampl" style={{float:'right',border:'none'}}
+                         onClick={() => {
+                          handleEditQuizShow();
+                          getQuiz3Details(q.correct_word,q.image_url,q.quiz_id,j,q.id);
+                        }}>
+                            <img src="http://localhost:3000/images/icons/edit-image.png"/>
+                        </button>
                         <button className="letterExampl" style={{float:'right',border:'none'}}onClick={()=>handleDeleteQuiz3(q.quiz_id,q.correct_word,j)}>
                             <img src="http://localhost:3000/images/icons/delete.png"/>
                         </button>
@@ -323,6 +420,65 @@ const handleSubmit = (e) => {
                   
                   >
                     Save Quiz Three
+                  </Button>
+                </Modal.Footer>
+              </form>
+            </Modal.Body>
+          </Modal>
+          </div>
+          <div className="row">
+          <Modal show={EditQuizshow} onHide={handleEditQuizClose}>
+            <Modal.Header>
+              <Modal.Title>
+                <h6>Edit Quiz One </h6>
+              </Modal.Title>
+              <button onClick={handleEditQuizClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </Modal.Header>
+            <Modal.Body>
+              <form onSubmit={handleQEditSubmit}  encType="multipart/form-data">
+              
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">
+                    <i  className="fab fa-wordpress-simple"></i></span>
+                  </div>
+                  <input type="text" className="form-control" onChange={(evt) => setEditword(evt.target.value)}
+                  placeholder={CurrentWord} aria-label="word1" aria-describedby="basic-addon1"/>
+                  
+                </div>
+                {wordError ? (
+                  alertwordError()
+                ) : null}
+                {wordExitError ? (
+                  alertExitwordError()
+                ) : null}
+
+              <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">
+                    <img style={{width:'30px',height:'30px',objectFit:'cover'}}src={REACT_APP_IMAGE_PATH+'phonetics_app'+CurrentImage}/> 
+                    </span>
+                  </div>
+                  <input type="file"  className="form-control" onChange={(evt) =>
+                   setEditimage(evt.target.files[0])}/>
+                </div>
+                {imageError ? (
+                 alertImageError()
+                ) : null}
+               
+                <Modal.Footer>
+                  <Button
+                    type="submit"
+                    style={{
+                      color: "#fff",
+                      background: "#1ed085",
+                      border: '1px solid #15283c'
+                    }}
+                  
+                  >
+                    Edit Quiz Three
                   </Button>
                 </Modal.Footer>
               </form>

@@ -73,7 +73,7 @@ const handleSubmit = (e) => {
     uploadData.append("image", image, image.name);
     console.log(image)
     axios
-        .post( `${REACT_APP_HOST}addExampleUpdate.php`, uploadData)
+        .post( `${REACT_APP_HOST}addExampleUpdate.php`,uploadData)
         .then((res) => {
         console.log(res);
         if (res.data=='file'){

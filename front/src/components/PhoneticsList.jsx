@@ -9,10 +9,34 @@ function PhoneticsList() {
   const { REACT_APP_HOST } = process.env;
   const navigate = useNavigate();
     // #Open and close model
-    const handleClose = () => setshow(false);
+    const handleClose = () => 
+    {
+      setshow(false);
+      setEditflag(false)
+      setname("")
+      setphType("")
+      setflashmsgshow(false)
+      setletterError(false)
+    }
     const handleShow = () => setshow(true);
+    const handleEditModalClose = () => {
+      setshowEditModal(false);
+      setEditflag(false)
+      setflashmsgshow(false)
+      setletterError(false)
+      setEditletter("")
+      setEdittype("")
+    }
+  
+    const handleEditModalShow = () => setshowEditModal(true);
     const [show, setshow] = useState(false);
+    const [showEditModal, setshowEditModal] = useState(false);
     const [name, setname] = useState("");
+    const [Editletter, setEditletter] = useState("");
+    const [Edittype, setEdittype] = useState("");
+    const [Pid, setPid] = useState("");
+    const [pname, setpname] = useState("");
+    const [pht, setpht] = useState("");
     const [flashmsgshow, setflashmsgshow] = useState(false);
     const [letterError, setletterError] = useState(false);
     const [affricates, Setaffricates] = useState([]);
@@ -25,6 +49,7 @@ function PhoneticsList() {
     const [short, Setshort] = useState([]);
     const [stops, Setstops] = useState([]);
     const [phType, setphType] = useState("");
+    const [Editflag, setEditflag] = useState("");
     const user = localStorage.getItem('username');
     const fetchData = async () => {
       if (user){
@@ -53,7 +78,43 @@ function PhoneticsList() {
     useEffect(() => {
       fetchData();
     }, []);
+const getPhoneticsDetails = (id,name,type) =>{
+      setPid(id)
+      setpname(name)
+      setpht(type)
+      console.log('getPhoneticsDetails:Pid',Pid)
+     
+} 
+const getPhoneticsType = (type) =>{
+  console.log('getPhoneticsType :type',type)
+  let phtypes = {
+  '1':'fricatives',
+  '2':'glidings',
+  '3':'leteral',
+  '4':'nasals',
+  '5':'stops',
+  '6':'short',
+  '7':'long',
+  '8':'diphthongs',
+  '9':'affricates'
+  }
+  return (
+    <>
+    {Object.entries(phtypes).map(([key,value]) => (
+        value == pht? (
+          <option key={key} value={key} selected>{value}</option>
+    ) : (
+      <option key={key} value={key}>{value}</option>
+    )
+        
+    ))}
+     
     
+    </>
+  );
+
+ 
+} 
 const handleDeleteLetter =(id)=>{
   console.log('letterId',id)
   const uploadData = new FormData();
@@ -62,7 +123,8 @@ const handleDeleteLetter =(id)=>{
   .post( `${REACT_APP_HOST}deletePhonetic.php`, uploadData)
   .then((res) => {
   console.log(res);
-  if (res.data=='delete'){
+  if (res.data==1){
+    successDeleteMsgAlert()
     fetchData();
   } 
 })
@@ -72,7 +134,7 @@ const handleDeleteLetter =(id)=>{
 const shortList = short.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -82,6 +144,14 @@ const shortList = short.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"short");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -91,7 +161,7 @@ const shortList = short.map((phonetic, i) => {
 const nasalsList = nasals.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -101,6 +171,14 @@ const nasalsList = nasals.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"nasals");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -110,7 +188,7 @@ const nasalsList = nasals.map((phonetic, i) => {
 const longList = long.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -120,6 +198,14 @@ const longList = long.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"long");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -129,7 +215,7 @@ const longList = long.map((phonetic, i) => {
 const leteralList = leteral.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -139,6 +225,14 @@ const leteralList = leteral.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"leteral");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -148,7 +242,7 @@ const leteralList = leteral.map((phonetic, i) => {
 const glidingsList = glidings.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -158,6 +252,14 @@ const glidingsList = glidings.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"glidings");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -167,7 +269,7 @@ const glidingsList = glidings.map((phonetic, i) => {
 const diphthongsList = diphthongs.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -177,6 +279,14 @@ const diphthongsList = diphthongs.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"diphthongs");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -186,7 +296,7 @@ const diphthongsList = diphthongs.map((phonetic, i) => {
 const fricativesList = fricatives.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -196,6 +306,14 @@ const fricativesList = fricatives.map((phonetic, i) => {
         </Link>
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
+        </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"fricatives");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
         </button>
       </div>
       <div className="custom-margin"></div>
@@ -205,7 +323,7 @@ const fricativesList = fricatives.map((phonetic, i) => {
 const stopsList = stops.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-2">
+      <div className="col-md-3">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -216,6 +334,14 @@ const stopsList = stops.map((phonetic, i) => {
         <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
             <img src="http://localhost:3000/images/icons/delete.png"/>
         </button>
+        <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"stops");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
+        </button>
       </div>
       <div className="custom-margin"></div>
     </>
@@ -224,7 +350,7 @@ const stopsList = stops.map((phonetic, i) => {
     const affricatesList = affricates.map((phonetic, i) => {
       return (
         <>
-          <div className="col-md-2">
+          <div className="col-md-3">
             <Link key={phonetic.id} 
               to={`/phoneticssexample/${phonetic.name}`}
               className="button-50 button"
@@ -235,13 +361,28 @@ const stopsList = stops.map((phonetic, i) => {
             <button className="letterDelete" onClick={()=>handleDeleteLetter(phonetic.id)}>
                 <img src="http://localhost:3000/images/icons/delete.png"/>
             </button>
+            <button style={{border:'none'}}className="letterEdit"
+        onClick={() => {
+          handleEditModalShow();
+          getPhoneticsDetails(phonetic.id,phonetic.name,"affricates");
+          getPhoneticsType()
+        }} >
+        <img src="http://localhost:3000/images/icons/edit-image.png"/>
+            </button>
           </div>
           <div className="custom-margin"></div>
         </>
       );
     });
+ 
     const successMsgAlert = () => {
       Swal.fire('Phonetics Leter added')
+    };
+    const successEditMsgAlert = () => {
+      Swal.fire('Phonetics Leter Edit')
+    };
+    const successDeleteMsgAlert = () => {
+      Swal.fire('Phonetics Leter Deleted')
     };
      //  form validation
   const validate = () => {
@@ -250,20 +391,50 @@ const stopsList = stops.map((phonetic, i) => {
     } else {
       setflashmsgshow(false)
     }
-   
-    if (name == "") {
+    if (phType == "") {
+      setEditflag(true)
+    } else {
+      setEditflag(false)
+    }
+    if (name == ""||phType=="") {
+      return false;
+    } else {
+      return true;
+    }
+  };
+  const Editvalidate = () => {
+    if (Editletter == "") {
+      setflashmsgshow(true)
+    } else {
+      setflashmsgshow(false)
+    }
+    if (Edittype == "") {
+      setEditflag(true)
+    } else {
+      setEditflag(false)
+    }
+    
+    if (Edittype == ""||Editletter=="") {
       return false;
     } else {
       return true;
     }
   };
 
-
 const alertError = () =>  {
   return (
     <div className="row d-flex justify-content-center">
         <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setflashmsgshow(false)} show={flashmsgshow} delay={3000} autohide>
           <Toast.Body>Phonetics Name can not be empty!</Toast.Body>
+        </Toast>
+    </div>
+  );
+}
+const alerttypeError = () =>  {
+  return (
+    <div className="row d-flex justify-content-center">
+        <Toast style={{padding:' 0.375rem 0.75rem',width:'95%',textAlign:'Center'}}className="mb-3 alert alert-danger" onClose={() => setEditflag(false)} show={Editflag} delay={3000} autohide>
+          <Toast.Body>Phonetics Type can not be empty!</Toast.Body>
         </Toast>
     </div>
   );
@@ -292,11 +463,46 @@ const alertletterError = () =>  {
           console.log('insert into database')
           setflashmsgshow(false)
           setletterError(false)
+          setEditflag(false)
+          setletterError(false)
           setname("")
+          setphType("")
           handleClose()
           successMsgAlert()
           fetchData()
         }if (res.data==-1){
+          console.log('letter exit in database')
+          setletterError(true)
+          setflashmsgshow(false)
+        }
+        
+      })
+      .catch((error) => console.log(error));
+  }};
+  const handleEditphSubmit = (e) => {
+    e.preventDefault();
+    const isValid = Editvalidate();
+    if (isValid) {
+    const uploadData = new FormData();
+    uploadData.append("name", Editletter)
+    uploadData.append("type", Edittype)
+    console.log('Edittype',Edittype)
+    uploadData.append("id", Pid)
+    axios
+      .post( `${REACT_APP_HOST}EditPhonetic.php`, uploadData)
+      .then((res) => {
+        console.log(res);
+        if (res.data>0){
+          setEditletter("")
+          setEdittype("")
+          setEditflag(false)
+          setflashmsgshow(false)
+          setletterError(false)
+          successEditMsgAlert()
+          handleEditModalClose()
+          fetchData()
+        }
+        if (res.data==-1){
           console.log('letter exit in database')
           setletterError(true)
           setflashmsgshow(false)
@@ -429,8 +635,6 @@ const alertletterError = () =>  {
                   <option value="8">diphthongs</option>
                   <option value="9">affricates</option>
               </select>
-      
-              
             </div>
               {flashmsgshow ? (
                 alertError()
@@ -438,6 +642,11 @@ const alertletterError = () =>  {
               {letterError ? (
                 alertletterError()
               ) : null}
+
+                {setEditflag ? (
+                alerttypeError()
+              ) : null}
+            
               <Modal.Footer>
                 <Button
                   type="submit"
@@ -449,6 +658,65 @@ const alertletterError = () =>  {
                  
                 >
                   Save Phonetics
+                </Button>
+              </Modal.Footer>
+            </form>
+          </Modal.Body>
+        </Modal>
+        </div>
+        <div className="row">
+        <Modal show={showEditModal} onHide={handleEditModalClose}>
+          <Modal.Header>
+            <Modal.Title>
+              <h6>Edit Phonetics </h6>
+            </Modal.Title>
+            <button onClick={handleEditModalClose}type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </Modal.Header>
+          <Modal.Body>
+            <form onSubmit={handleEditphSubmit}  encType="multipart/form-data">
+            <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                    <i className="fas fa-sort-alpha-down"></i>
+                    </span>
+                </div>
+                <input type="text" className="form-control" onChange={(evt) => setEditletter(evt.target.value)}
+                placeholder={pname} aria-label="name" aria-describedby="basic-addon1"/>
+              </div>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                    <i className="fas fa-sort-alpha-down"></i>
+                    </span>
+                </div>
+                <select  className="custom-select"  
+                 onChange={(evt) => setEdittype(evt.target.value)} >
+                  {getPhoneticsType()}
+                </select>
+                </div>
+                {flashmsgshow ? (
+                alertError()
+              ) : null}
+              {letterError ? (
+                alertletterError()
+              ) : null}
+
+                {setEditflag ? (
+                alerttypeError()
+              ) : null}
+              <Modal.Footer>
+                <Button
+                  type="submit"
+                  style={{
+                    color: "#fff",
+                    background: "#1ed085",
+                    border: '1px solid #15283c'
+                  }}
+                 
+                >
+                  Edit Phonetics
                 </Button>
               </Modal.Footer>
             </form>
