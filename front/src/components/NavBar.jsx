@@ -24,7 +24,7 @@ function NavBar() {
             <i className="fa fa-bars"></i>
           </button>
           <div className="logo_section">
-            <a href="index.html">
+            <a>
               <img
                 className="img-responsive"
                 src="http://localhost:3000/images/logo/logo.png"

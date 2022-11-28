@@ -134,7 +134,7 @@ const handleDeleteLetter =(id)=>{
 const shortList = short.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -161,7 +161,7 @@ const shortList = short.map((phonetic, i) => {
 const nasalsList = nasals.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -188,7 +188,7 @@ const nasalsList = nasals.map((phonetic, i) => {
 const longList = long.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -215,7 +215,7 @@ const longList = long.map((phonetic, i) => {
 const leteralList = leteral.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -242,7 +242,7 @@ const leteralList = leteral.map((phonetic, i) => {
 const glidingsList = glidings.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -269,7 +269,7 @@ const glidingsList = glidings.map((phonetic, i) => {
 const diphthongsList = diphthongs.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -296,7 +296,7 @@ const diphthongsList = diphthongs.map((phonetic, i) => {
 const fricativesList = fricatives.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -323,7 +323,7 @@ const fricativesList = fricatives.map((phonetic, i) => {
 const stopsList = stops.map((phonetic, i) => {
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-md-3 col-sm-4">
         <Link key={phonetic.id} 
           to={`/phoneticssexample/${phonetic.name}`}
           className="button-50 button"
@@ -350,7 +350,7 @@ const stopsList = stops.map((phonetic, i) => {
     const affricatesList = affricates.map((phonetic, i) => {
       return (
         <>
-          <div className="col-md-3">
+          <div className="col-md-3 col-sm-4">
             <Link key={phonetic.id} 
               to={`/phoneticssexample/${phonetic.name}`}
               className="button-50 button"

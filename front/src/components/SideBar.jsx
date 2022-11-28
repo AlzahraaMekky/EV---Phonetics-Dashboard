@@ -8,7 +8,7 @@ function SideBar() {
         <div className="sidebar_blog_1">
           <div className="sidebar-header">
             <div className="logo_section">
-              <a href="index.html">
+              <a>
                 <img
                   className="logo_icon img-responsive"
                   src="http://localhost:3000/images/logo/logo.png"
