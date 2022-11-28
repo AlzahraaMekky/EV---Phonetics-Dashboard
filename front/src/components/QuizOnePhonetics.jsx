@@ -232,36 +232,62 @@ const handleSubmit = (e) => {
   })
       .catch((error) => console.log(error));
   }};
+  const handleAllDeleteQuiz1=(id)=>{
+    const uploadData = new FormData();
+    uploadData.append("Quiz_id", id)
+    axios
+    .post( `${REACT_APP_HOST}deleteAllQuiz1.php`, uploadData)
+    .then((res) => {
+    console.log('res.data',res.data);
+    if (res.data==1){
+      fetchData();
+    } 
+  })
+    .catch((error) => console.log(error));
+  }
+  
   const PhoneticsQuizOneList = PhoneticsQuizOne.map((quiz, i) => {
-    return ( 
-            <>
-                {quiz.data.map((q,j) => 
-                  <div className="col-md-4">
-                  <div className="boxContainer" style={{height:'85px'}}>
-                      <div className="boxlayout">
-                            <img
-                            className="img-responsive quiz1-img"
-                            src={REACT_APP_IMAGE_PATH +'/phonetics_app'+q.image_url}
-                            alt="#"
-                        />
-                        <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {q.correct_word}</span>
-                        <button className="letterExampl" style={{float:'right',border:'none'}}
-                         onClick={() => {
-                          handleEditQuizShow();
-                          getQuiz1Details(q.correct_word,q.image_url,q.quiz_id,j,q.id);
-                        }}>
-                            <img src="http://localhost:3000/images/icons/edit-image.png"/>
-                        </button>
-                        <button className="letterExampl" style={{float:'right',border:'none'}}
-                         onClick={()=>handleDeleteQuiz1(q.quiz_id,q.correct_word,j)}
-                        >
-                            <img src="http://localhost:3000/images/icons/delete.png"/>
-                        </button>
-                      </div>
+    return (
+      <div  className='phdiiv'>
+        <div className="badge badge-light num">{i+1}</div>
+        <div  className="row column1" style={{border:'1px solid #15283c',
+        paddingTop:'15px',paddingLeft:'15px',paddingRight:'15px',marginBottom:'20px'}}>
+          
+            {quiz.data.map((q,j) => 
+              <div className="col-md-4">
+              <div className="boxContainer" style={{height:'85px'}}>
+                  <div className="boxlayout">
+                        <img
+                        className="img-responsive quiz1-img"
+                        src={REACT_APP_IMAGE_PATH +'/phonetics_app'+q.image_url}
+                        alt="#"
+                    />
+                    <span style={{fontSize:'16px',fontWeight:'500',color:'#15283c',paddingLeft:'5px'}}> {q.correct_word}</span>
+                    <button className="letterExampl" style={{float:'right',border:'none'}}
+                      onClick={() => {
+                      handleEditQuizShow();
+                      getQuiz1Details(q.correct_word,q.image_url,q.quiz_id,j,q.id);
+                    }}>
+                        <img src="http://localhost:3000/images/icons/edit-image.png"/>
+                    </button>
+                    <button className="letterExampl" style={{float:'right',border:'none'}}
+                      onClick={()=>handleDeleteQuiz1(q.quiz_id,q.correct_word,j)}
+                    >
+                        <img src="http://localhost:3000/images/icons/delete.png"/>
+                    </button>
                   </div>
-                  </div>
-                )}
-            </>
+              </div>
+              </div>
+            )}
+           
+        </div>
+        <div className="delAllquiz">
+              <button className="letterExampl" style={{border:'none'}}
+                onClick={()=>handleAllDeleteQuiz1(quiz.id)}>
+              <img src="http://localhost:3000/images/icons/delete.png"/>
+              </button>
+        </div>
+      </div> 
     )
 });
 const handleQEditSubmit=(e)=>{
@@ -321,8 +347,7 @@ const handleQEditSubmit=(e)=>{
               </Button>
           </div>
           </div>
-        
-          <div className="row column1">{PhoneticsQuizOneList}</div>
+            {PhoneticsQuizOneList}
           <div className="row">
           <Modal show={show} onHide={handleClose}>
             <Modal.Header>
